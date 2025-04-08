@@ -1,0 +1,11 @@
+.unity-player-control-bar {
+	width: 100%;
+	min-height: 150px;
+	max-height: 20%;
+
+	position: relative;
+}
+
+.unity-player-control-bar > h1 {
+	top: 0;
+}

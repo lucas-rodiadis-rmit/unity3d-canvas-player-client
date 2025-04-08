@@ -1,24 +1,43 @@
-import { useState } from 'react'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
-import UnityPlayer from './components/UnityPlayer';
-
+import UnityPlayer, {
+	DefaultUnityPlayerConfig
+} from "./components/UnityPlayer";
+import ControlBar from "./components/ControlBar";
 
 function App() {
 	const [auth, setAuth] = useState(true);
 
-	const content = auth ?
-		<UnityPlayer /> :
-		<div>You are not authorised to view this content.</div>;
+	const [player, setA] = useState<React.JSX | null>(null);
+	useEffect(() => {
+		setA(
+			<UnityPlayer
+				url="build"
+				config={DefaultUnityPlayerConfig}
+			/>
+		);
+	}, []);
 
 	return (
 		<>
-			<div id="main-div">
-				<h1>Unity 3D Canvas Player</h1>
-				{content}
+			<div className="unity-player-main">
+				<ControlBar>
+				</ControlBar>
+
+				{player ? (
+					player || (
+						<div>No player available.</div>
+					)
+				) : (
+					<div>
+						You are not authorised to view this
+						content.
+					</div>
+				)}
 			</div>
 		</>
-	)
+	);
 }
 
-export default App
+export default App;
