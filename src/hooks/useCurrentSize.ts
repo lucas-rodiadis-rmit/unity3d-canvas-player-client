@@ -5,23 +5,31 @@ type SizeState = {
 	height: number;
 };
 
-const DEFAULT_SIZES: SizeState = { width: 900, height: 600 } as const;
-
+const DEFAULT_SIZES: SizeState = {
+	width: 900,
+	height: 600
+} as const;
 
 function useCurrentSize(): SizeState {
-	const [size, setSize] = useState<SizeState>({ ...DEFAULT_SIZES });
+	const [size, setSize] = useState<SizeState>({
+		...DEFAULT_SIZES
+	});
 
 	function onResize() {
-		setSize({ width: window.innerWidth, height: window.innerHeight });
+		setSize({
+			width: window.innerWidth,
+			height: window.innerHeight
+		});
 	}
 
 	useEffect(() => {
 		onResize();
 		window.addEventListener("resize", onResize);
-		return () => window.removeEventListener("resize", onResize);
+		return () =>
+			window.removeEventListener("resize", onResize);
 	}, []);
 
 	return size;
-};
+}
 
 export default useCurrentSize;

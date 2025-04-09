@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+import ControlBar from "./components/ControlBar";
 import UnityPlayer, {
 	DefaultUnityPlayerConfig
 } from "./components/UnityPlayer";
-import ControlBar from "./components/ControlBar";
 
 function App() {
 	const [auth, setAuth] = useState(true);
@@ -22,10 +22,9 @@ function App() {
 	return (
 		<>
 			<div className="unity-player-main">
-				<ControlBar>
-				</ControlBar>
+				<ControlBar />
 
-				{player ? (
+				{auth ? (
 					player || (
 						<div>No player available.</div>
 					)

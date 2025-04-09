@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import "./UnityPlayer.css";
 
-import { createUnityInstance } from "./loader";
 import useCurrentSize from "../hooks/useCurrentSize";
+import { createUnityInstance } from "./loader";
 
 export const defaultBuildUrl: string = "/ClinicSim/Build";
 export const defaultLoaderUrl: string =
@@ -39,9 +39,9 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 		null
 	);
 
-	const containerRef = useRef<HTMLDivElement | null>(null);
-
-
+	const containerRef = useRef<HTMLDivElement | null>(
+		null
+	);
 
 	const { width, height } = useCurrentSize();
 
@@ -65,16 +65,15 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 		createUnityInstance(
 			canvasRef.current,
 			{ ...config },
-			() => { }
+			() => {}
 		)
-			.then((_unityInstance) => { })
+			.then((_unityInstance) => {})
 			.catch((message) => {
 				alert(message);
 			});
 	}, [canvasRef]);
 
 	console.log("Re-rendering Unity Component");
-
 
 	return (
 		<div ref={containerRef} id="canvas-unity-player">

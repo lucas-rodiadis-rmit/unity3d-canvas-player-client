@@ -1,11 +1,14 @@
 .unity-player-control-bar {
 	width: 100%;
-	min-height: 150px;
-	max-height: 20%;
+	max-height: 50px;
 
 	position: relative;
+	z-index: 1;
+	background-color: rgba(255, 255, 255, 0.3);
 }
 
 .unity-player-control-bar > h1 {
+	font-size: 1.5vh;
+
 	top: 0;
 }
