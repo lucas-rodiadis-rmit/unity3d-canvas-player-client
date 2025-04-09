@@ -1,14 +1,25 @@
 .unity-player-control-bar {
 	width: 100%;
-	max-height: 50px;
 
 	position: relative;
 	z-index: 1;
-	background-color: rgba(255, 255, 255, 0.3);
+	/* background-color: rgba(255, 255, 255, 0.3); */
+	/* TODO: Put a nicer gradient here */
+	background-color: gray;
+
+	opacity: 0.4;
+	transition: opacity 0.65s ease;
+}
+
+.unity-player-control-bar:hover {
+	opacity: 1;
+	transition: opacity 0.25s ease;
 }
 
 .unity-player-control-bar > h1 {
-	font-size: 1.5vh;
+	font-size: max(1.5vh, 15px);
+	text-align: center;
+	font-weight: bold;
 
 	top: 0;
 }
