@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import "./UnityPlayer.css";
 
 import { createUnityInstance } from "./loader";
+import useCurrentSize from "../hooks/useCurrentSize";
 
 export const defaultBuildUrl: string = "/ClinicSim/Build";
 export const defaultLoaderUrl: string =
@@ -38,13 +39,26 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 		null
 	);
 
+	const containerRef = useRef<HTMLDivElement | null>(null);
+
+
+
+	const { width, height } = useCurrentSize();
+
+	/*
 	const [rect, setRect] = useState<Rect>({
 		width: 960,
 		height: 550
 	});
+   */
 
 	config.matchWebGLToCanvasSize = false;
 
+	useEffect(() => {
+		console.log(width, height);
+	}, [width, height]);
+
+	/* When the page first loads, or the canvas reference changes, load the game */
 	useEffect(() => {
 		if (!canvasRef.current) return;
 
@@ -57,31 +71,19 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 			.catch((message) => {
 				alert(message);
 			});
-	}, []);
+	}, [canvasRef]);
+
+	console.log("Re-rendering Unity Component");
+
 
 	return (
-		<div id="unity-player">
+		<div ref={containerRef} id="canvas-unity-player">
 			<title>Unity WebGL Player | Nursing XR</title>
 			<canvas
 				ref={canvasRef}
 				id="unity-canvas"
-				onResize={() => {
-					const parentRect =
-						canvasRef.current?.parentElement?.getClientRects();
-					if (!parentRect) {
-						return;
-					}
-
-					setRect({
-						width: parentRect.width,
-						height: parentRect.height
-					});
-
-				}}
-				width={rect.width}
-				height={rect.height}
-			//				width={900}
-			//				height={600}
+				width={width}
+				height={height}
 			/>
 		</div>
 	);
