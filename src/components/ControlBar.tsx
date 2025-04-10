@@ -17,13 +17,13 @@ function ControlBar() {
 
 			<div className="right-section">
 				<div className="divider"></div>
-				<div className="icon-rotate" title="Restart"></div>
+				<div className="icon" title="Restart"></div>
 				<div className="divider"></div>
-				<div className="icon-fullscreen" title="Fullscreen"></div>
+				<div className="icon" title="Fullscreen"></div>
 				<div className="divider"></div>
-				<div className="icon-menu" title="Menu"></div>
+				<div className="icon" title="Menu"></div>
 				<div className="divider"></div>
-				<div className="icon-close" title="Close"></div>
+				<div className="icon" title="Close"></div>
 			</div>
 		</div>
 	);
