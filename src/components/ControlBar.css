@@ -60,4 +60,13 @@
 	mask-repeat: no-repeat;
 	mask-position: center;
 	mask-size: contain;
+	transition-duration: 0.3s;
+}
+
+.unity-player-control-bar .icon:hover {
+	width: 25px;
+	height: 25px;
+	padding-left: 5;
+	transition-duration: 0.3s;
+	opacity: 0.5;
 }
