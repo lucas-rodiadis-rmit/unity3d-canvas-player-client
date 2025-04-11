@@ -57,25 +57,7 @@
 .unity-player-control-bar .icon {
 	width: 20px;
 	height: 20px;
-	background-color: #fff;
 	mask-repeat: no-repeat;
 	mask-position: center;
 	mask-size: contain;
-}
-
-/* Placeholder masks for icons */
-.icon.rotate {
-	mask-image: url('rotate-icon.svg');
-}
-
-.icon.fullscreen {
-	mask-image: url('fullscreen-icon.svg');
-}
-
-.icon.menu {
-	mask-image: url('menu-icon.svg');
-}
-
-.icon.close {
-	mask-image: url('close-icon.svg');
 }

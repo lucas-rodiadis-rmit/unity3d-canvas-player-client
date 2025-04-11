@@ -11,19 +11,19 @@ function ControlBar() {
 
 			<div className="center-section">
 				<div className="logo">
-					<img src="unity-icon.svg" alt="Unity" style={{ height: '24px' }} />
+					<img src="unity-logo.png" alt="Unity" style={{ height: '36px' }} />
 				</div>
 			</div>
 
 			<div className="right-section">
+				<img className="icon" title="Restart" src="reload-icon.png"></img>
 				<div className="divider"></div>
-				<div className="icon" title="Restart"></div>
+				<img className="icon" title="Fullscreen" src="fullscreen-icon.png"></img>
 				<div className="divider"></div>
-				<div className="icon" title="Fullscreen"></div>
+				<img className="icon" title="Menu" src="options-icon.png"></img>
 				<div className="divider"></div>
-				<div className="icon" title="Menu"></div>
+				<img className="icon" title="Close" src="cross-icon.png"></img>
 				<div className="divider"></div>
-				<div className="icon" title="Close"></div>
 			</div>
 		</div>
 	);
