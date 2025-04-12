@@ -1,3 +1,4 @@
+/*
 //canvas: HTMLCanvasElement,
 // config: any,
 // progressCallback: (progress: number) => void
@@ -1554,3 +1555,4 @@ export function createUnityInstance(
 		})
 	);
 }
+*/

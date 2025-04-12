@@ -1,21 +1,19 @@
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useRef, useState } from "react";
 import "./App.css";
 
 import ControlBar from "./components/ControlBar";
-import UnityPlayer, {
-	DefaultUnityPlayerConfig
-} from "./components/UnityPlayer";
+import UnityPlayer from "./components/UnityPlayer";
+import UnityConfig, { DefaultUnityPlayerConfig } from "./types/UnityConfig";
 
 function App() {
-	const [auth, setAuth] = useState(true);
+	const [auth, _setAuth] = useState(true);
+	const [player, setApp] = useState<JSX.Element | null>(null);
 
-	const [player, setA] = useState<React.JSX | null>(null);
+	const defaultConfig = useRef<UnityConfig>(DefaultUnityPlayerConfig("http://localhost:3000/ClinicSim/Build"));
+
 	useEffect(() => {
-		setA(
-			<UnityPlayer
-				url="build"
-				config={DefaultUnityPlayerConfig}
-			/>
+		setApp(
+			<UnityPlayer config={defaultConfig.current} />
 		);
 	}, []);
 
