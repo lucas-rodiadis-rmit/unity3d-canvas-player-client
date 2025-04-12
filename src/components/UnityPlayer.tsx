@@ -42,37 +42,39 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 	useEffect(() => {
 		if (!canvasRef.current) return;
 
-		const getLoader = async () => {
+		const runLoader = async () => {
 			const loaderUrl: string =
 				(config.buildUrl + "/buildweb.loader.js").replace("//", "/");
-			console.log(`Importing loader from ${loaderUrl}`)
-			try {
-				var loader = await import(/* @vite-ignore */ loaderUrl);
-			}
-			catch (message) {
-				console.error("Unable to import loader.\n", message);
-				return;
-			}
+			console.log(`Using Unity loader from ${loaderUrl}`)
 
-			if (!loader.createUnityInstance) {
-				console.error(
-					"createUnityInstance function was not found in the loader js."
-				);
-				return;
-			}
+			const script = document.createElement("script");
+			script.src = loaderUrl;
+			script.onload = async () => {
+				const createUnityInstance = (window as any).createUnityInstance;
 
-			try {
-				await loader.createUnityInstance(
-					canvasRef.current,
-					{ ...config },
-					() => { }
-				);
-			} catch (message) {
-				alert(message);
-			}
+				if (!createUnityInstance) {
+					console.error(
+						"createUnityInstance function was not found in the loader js."
+					);
+					return;
+				}
+
+				try {
+					await createUnityInstance(
+						canvasRef.current,
+						{ ...config },
+						() => { }
+					);
+				} catch (message) {
+					alert(message);
+				}
+			};
+
+			document.body.appendChild(script);
+
 		};
 
-		getLoader();
+		runLoader();
 	}, [canvasRef]);
 
 	console.log("Re-rendering Unity Component");
