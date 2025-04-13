@@ -43,14 +43,18 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 		if (!canvasRef.current) return;
 
 		const runLoader = async () => {
-			const loaderUrl: string =
-				(config.buildUrl + "/buildweb.loader.js").replace("//", "/");
-			console.log(`Using Unity loader from ${loaderUrl}`)
+			const loaderUrl: string = (
+				config.buildUrl + "/buildweb.loader.js"
+			).replace("//", "/");
+			console.log(
+				`Using Unity loader from ${loaderUrl}`
+			);
 
 			const script = document.createElement("script");
 			script.src = loaderUrl;
 			script.onload = async () => {
-				const createUnityInstance = (window as any).createUnityInstance;
+				const createUnityInstance = (window as any)
+					.createUnityInstance;
 
 				if (!createUnityInstance) {
 					console.error(
@@ -63,7 +67,7 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 					await createUnityInstance(
 						canvasRef.current,
 						{ ...config },
-						() => { }
+						() => {}
 					);
 				} catch (message) {
 					alert(message);
@@ -71,7 +75,6 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 			};
 
 			document.body.appendChild(script);
-
 		};
 
 		runLoader();
