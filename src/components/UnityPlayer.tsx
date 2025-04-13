@@ -3,36 +3,16 @@ import { useEffect, useRef } from "react";
 import "./UnityPlayer.css";
 
 import useCurrentSize from "../hooks/useCurrentSize";
-import { createUnityInstance } from "./loader";
+import UnityConfig from "../types/UnityConfig";
 
 export const defaultBuildUrl: string = "/ClinicSim/Build";
 export const defaultLoaderUrl: string =
 	defaultBuildUrl + "/buildweb.loader.js";
 
-export const DefaultUnityPlayerConfig = {
-	dataUrl: defaultBuildUrl + "/buildweb.data.gz",
-	frameworkUrl:
-		defaultBuildUrl + "/buildweb.framework.js.gz",
-	codeUrl: defaultBuildUrl + "/buildweb.wasm.gz",
-	streamingAssetsUrl: "StreamingAssets",
-	companyName: "RMIT",
-	productName: "Nursing XR",
-	productVersion: "1"
-	// showBanner: unityShowBanner,
-};
-
 interface UnityPlayerProps {
-	// The url that the build is hosted on
-	url: string;
-
 	// The Unity config
-	config: any;
+	config: UnityConfig;
 }
-
-type Rect = {
-	width: number;
-	height: number;
-};
 
 function UnityPlayer({ config }: UnityPlayerProps) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(
@@ -62,15 +42,42 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 	useEffect(() => {
 		if (!canvasRef.current) return;
 
-		createUnityInstance(
-			canvasRef.current,
-			{ ...config },
-			() => {}
-		)
-			.then((_unityInstance) => {})
-			.catch((message) => {
-				alert(message);
-			});
+		const runLoader = async () => {
+			const loaderUrl: string = (
+				config.buildUrl + "/buildweb.loader.js"
+			).replace("//", "/");
+			console.log(
+				`Using Unity loader from ${loaderUrl}`
+			);
+
+			const script = document.createElement("script");
+			script.src = loaderUrl;
+			script.onload = async () => {
+				const createUnityInstance = (window as any)
+					.createUnityInstance;
+
+				if (!createUnityInstance) {
+					console.error(
+						"createUnityInstance function was not found in the loader js."
+					);
+					return;
+				}
+
+				try {
+					await createUnityInstance(
+						canvasRef.current,
+						{ ...config },
+						() => {}
+					);
+				} catch (message) {
+					alert(message);
+				}
+			};
+
+			document.body.appendChild(script);
+		};
+
+		runLoader();
 	}, [canvasRef]);
 
 	console.log("Re-rendering Unity Component");

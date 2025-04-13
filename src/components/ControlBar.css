@@ -20,7 +20,7 @@
 	transition: opacity 0.25s ease;
 }
 
-.unity-player-control-bar>h1 {
+.unity-player-control-bar > h1 {
 	font-size: max(1.5vh, 15px);
 	text-align: center;
 	font-weight: bold;
