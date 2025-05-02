@@ -29,7 +29,6 @@
 }
 
 .unity-player-control-bar .left-section,
-.unity-player-control-bar .center-section,
 .unity-player-control-bar .right-section {
 	display: flex;
 	align-items: center;
@@ -64,9 +63,8 @@
 }
 
 .unity-player-control-bar .icon:hover {
-	width: 25px;
-	height: 25px;
-	padding-left: 5;
+	transform: scale(1.2);
+	offset-position: 5px;
 	transition-duration: 0.3s;
 	opacity: 0.5;
 }
