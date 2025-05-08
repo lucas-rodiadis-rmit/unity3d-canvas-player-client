@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import "./UnityPlayer.css";
 
@@ -45,6 +45,16 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 
 	const { width, height } = useCurrentSize();
 
+
+	const [bruh, setBruh] = useState<any>(null);
+
+
+	const whatever = useCallback(() => {
+		if (bruh !== null) {
+			bruh.SetFullscreen(1);
+		}
+	}, [bruh]);
+
 	/*
 	const [rect, setRect] = useState<Rect>({
 		width: 960,
@@ -65,9 +75,11 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 		createUnityInstance(
 			canvasRef.current,
 			{ ...config },
-			() => {}
+			() => { }
 		)
-			.then((_unityInstance) => {})
+			.then((unityInstance: any) => {
+				setBruh(unityInstance);
+			})
 			.catch((message) => {
 				alert(message);
 			});
@@ -78,13 +90,17 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 	return (
 		<div ref={containerRef} id="canvas-unity-player">
 			<title>Unity WebGL Player | Nursing XR</title>
+			<button onClick={whatever} style={{
+				position: "absolute",
+				top: "40px"
+			}} > bruh</button>
 			<canvas
 				ref={canvasRef}
 				id="unity-canvas"
 				width={width}
 				height={height}
 			/>
-		</div>
+		</div >
 	);
 }
 
