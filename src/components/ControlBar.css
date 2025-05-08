@@ -20,7 +20,7 @@
 	transition: opacity 0.25s ease;
 }
 
-.unity-player-control-bar > h1 {
+.unity-player-control-bar>h1 {
 	font-size: max(1.5vh, 15px);
 	text-align: center;
 	font-weight: bold;
@@ -33,6 +33,14 @@
 	display: flex;
 	align-items: center;
 	gap: 16px;
+}
+
+.unity-player-control-bar .center-section {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
 }
 
 .unity-player-control-bar .left-section {

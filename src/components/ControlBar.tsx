@@ -1,50 +1,53 @@
+import { useState } from "react";
 import "./ControlBar.css";
 
 function ControlBar() {
-	return (
-		<div className="unity-player-control-bar">
-			<div className="left-section">
-				<span>FPS: 30</span>
-				<div className="divider"></div>
-				<span>s1234567</span>
-			</div>
+	const [visible, setVisible] = useState(true);
+	const toggleVisible = () => setVisible(!visible);
 
-			<div className="center-section">
+	return (
+		<div>
+			{!visible && <div className="center-section" onClick={toggleVisible}>
 				<div className="logo">
 					<img
 						src="unity-logo.png"
 						alt="Unity"
-						style={{ height: "36px" }}
+						style={{ height: "36px", cursor: "pointer" }}
 					/>
 				</div>
-			</div>
+			</div>}
 
-			<div className="right-section">
-				<img
-					className="icon"
-					title="Restart"
-					src="reload-icon.png"
-				></img>
-				<div className="divider"></div>
-				<img
-					className="icon"
-					title="Fullscreen"
-					src="fullscreen-icon.png"
-				></img>
-				<div className="divider"></div>
-				<img
-					className="icon"
-					title="Menu"
-					src="options-icon.png"
-				></img>
-				<div className="divider"></div>
-				<img
-					className="icon"
-					title="Close"
-					src="cross-icon.png"
-				></img>
-				<div className="divider"></div>
-			</div>
+			{visible && (
+				<div className="unity-player-control-bar">
+					<div className="left-section">
+						<span>FPS: 30</span>
+						<div className="divider"></div>
+						<span>s1234567</span>
+					</div>
+
+					<div className="center-section" onClick={toggleVisible}>
+						<div className="logo">
+							<img
+								src="unity-logo.png"
+								alt="Unity"
+								style={{ height: "36px", cursor: "pointer" }}
+							/>
+						</div>
+					</div>
+
+
+					<div className="right-section">
+						<img className="icon" title="Restart" src="reload-icon.png" />
+						<div className="divider"></div>
+						<img className="icon" title="Fullscreen" src="fullscreen-icon.png" />
+						<div className="divider"></div>
+						<img className="icon" title="Menu" src="options-icon.png" />
+						<div className="divider"></div>
+						<img className="icon" title="Close" src="cross-icon.png" />
+						<div className="divider"></div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
