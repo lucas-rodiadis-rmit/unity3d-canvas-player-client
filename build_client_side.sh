@@ -16,7 +16,8 @@ mkdir -p "../server/src/public/$CLIENT_SIDE_DIR" &&
 # Copy public assets to respective server directory
 cp -ra ./public/* "../server/src/public/$CLIENT_SIDE_DIR/" &&
 # Copy the index.html file to the test Unity project directory
-cp -a ./dist/index.html "../server/$UNITY_PROJECTS_DIR/$UNITY_PROJECT_TEST_DIR" &&
+mkdir -p "../server/$UNITY_PROJECTS_DIR/$UNITY_PROJECT_TEST_DIR/" &&
+cp -a ./dist/index.html "../server/$UNITY_PROJECTS_DIR/$UNITY_PROJECT_TEST_DIR/" &&
 
 # Build the client, and copy into built web app into frontend directory
 npx vite build && cp -ra ./dist/assets "../server/src/public/$CLIENT_SIDE_DIR/" &&
