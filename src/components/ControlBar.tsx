@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./ControlBar.css";
 import {config} from "../config/config";
 
-const PUBLIC_RESOURCES_URL: string = config.PUBLIC_URL;
+const PUBLIC_RESOURCES_URL: string = config.CLIENT_SIDE_URL;
 
 function MakeFullScreen() {
 	window.parent.postMessage(

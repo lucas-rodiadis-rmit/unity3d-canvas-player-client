@@ -8,14 +8,16 @@ cd "$(dirname "$0")" &&
 # so that variables can be injected into the client-side code
 cat > .env <<EOF
 VITE_DOMAIN_URL=$DOMAIN_URL
-VITE_PUBLIC_URL=$PUBLIC_URL
+VITE_CLIENT_SIDE_URL=$CLIENT_SIDE_URL
 EOF
 
+# Make sure the frontend directory exists
+mkdir -p "../server/src/public/$CLIENT_SIDE_DIR" && 
 # Copy public assets to respective server directory
-cp -ra ./public/* "../server/src/public" &&
+cp -ra ./public/* "../server/src/public/$CLIENT_SIDE_DIR/"
 
-# Build the client and copy into  
-npx vite build && cp -ra ./dist/* "../server/$UNITY_PROJECTS_DIR" &&
+# Build the client, and copy into built web app into frontend directory
+npx vite build && cp -ra ./dist/assets "../server/src/public/$CLIENT_SIDE_DIR/" &&
 
 # Return to the original directory
 cd $PARENT_SCRIPT_DIR
