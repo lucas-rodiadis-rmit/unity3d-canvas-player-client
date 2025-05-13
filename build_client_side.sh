@@ -12,7 +12,7 @@ VITE_PUBLIC_URL=$PUBLIC_URL
 EOF
 
 # Copy public assets to respective server directory
-cp -ra ./public "../server/src/public" &&
+cp -ra ./public/* "../server/src/public" &&
 
 # Build the client and copy into  
 npx vite build && cp -ra ./dist/* "../server/$UNITY_PROJECTS_DIR" &&
