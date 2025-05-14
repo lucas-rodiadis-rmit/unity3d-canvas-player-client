@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import App from './App.tsx';
 import XmlGenerator from './XmlGenerator.tsx';
+import EmbedSelection from './EmbedSelection.tsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/xml" element={<XmlGenerator />} />
+        <Route path="/embed" element={<EmbedSelection />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
