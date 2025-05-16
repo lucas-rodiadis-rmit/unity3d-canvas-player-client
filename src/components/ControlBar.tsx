@@ -1,33 +1,24 @@
 import { useState } from "react";
+import { RESOURCES_URL } from "../constants";
 import "./ControlBar.css";
 
-function MakeFullScreen() {
-	window.parent.postMessage(
-		{
-			subject: "requestFullWindowLaunch",
-			data: {
-				url: "https://canvasunityplayer.hudini.online/unity-player",
-				placement: "course_navigation",
-				launchType: "same_window",
-				launchOptions: {
-					width: 1000,
-					height: 800
-				}
-			}
-		},
-		"*"
-	);
+interface ControlBarProps {
+	// Function to set fullscreen mode
+	makeFullScreen: () => void;
 }
 
-function ControlBar() {
+function ControlBar({ makeFullScreen }: ControlBarProps) {
+	// State for control bar visibility
 	const [visible, setVisible] = useState(true);
 	const toggleVisible = () => setVisible(!visible);
 
 	return (
 		<div>
-			{!visible && <div className="center-section">
-				<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
-			</div>}
+			{!visible && (
+				<div className="center-section">
+					<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
+				</div>
+			)}
 
 			{visible && (
 				<div>
@@ -38,31 +29,53 @@ function ControlBar() {
 							<span>s1234567</span>
 						</div>
 
-						<div className="center-section" onClick={toggleVisible}>
+						<div
+							className="center-section"
+							onClick={toggleVisible}
+						>
 							<div className="logo">
 								<img
-									src="unity-logo.png"
+									src={`${RESOURCES_URL}//unity-logo.png`}
 									alt="Unity"
-									style={{ height: "36px", cursor: "pointer" }}
+									style={{
+										height: "36px",
+										cursor: "pointer"
+									}}
 								/>
 							</div>
 						</div>
 
-
 						<div className="right-section">
-							<img className="icon" title="Restart" src="reload-icon.png" />
+							<img
+								className="icon"
+								title="Restart"
+								src={`${RESOURCES_URL}/reload-icon.png`}
+							/>
 							<div className="divider"></div>
-							<img className="icon" title="Fullscreen" src="fullscreen-icon.png" onClick={MakeFullScreen} />
+							<img
+								className="icon"
+								title="Fullscreen"
+								src={`${RESOURCES_URL}/fullscreen-icon.png`}
+								onClick={() => makeFullScreen()}
+							></img>
 							<div className="divider"></div>
-							<img className="icon" title="Menu" src="options-icon.png" />
+							<img
+								className="icon"
+								title="Menu"
+								src={`${RESOURCES_URL}/options-icon.png`}
+							></img>
 							<div className="divider"></div>
-							<img className="icon" title="Close" src="cross-icon.png" />
+							<img
+								className="icon"
+								title="Close"
+								src={`${RESOURCES_URL}/cross-icon.png`}
+							></img>
 							<div className="divider"></div>
 						</div>
 					</div>
 					<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
-
-				</div>)}
+				</div>
+			)}
 		</div>
 	);
 }
