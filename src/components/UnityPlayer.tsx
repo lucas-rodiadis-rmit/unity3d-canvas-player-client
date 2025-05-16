@@ -10,11 +10,16 @@ export const defaultLoaderUrl: string =
 	defaultBuildUrl + "/buildweb.loader.js";
 
 interface UnityPlayerProps {
-	// The Unity config
 	config: UnityConfig;
+	setUnityInstance: React.Dispatch<
+		React.SetStateAction<any | null>
+	>;
 }
 
-function UnityPlayer({ config }: UnityPlayerProps) {
+function UnityPlayer({
+	config,
+	setUnityInstance
+}: UnityPlayerProps) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(
 		null
 	);
@@ -24,13 +29,6 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 	);
 
 	const { width, height } = useCurrentSize();
-
-	/*
-	const [rect, setRect] = useState<Rect>({
-		width: 960,
-		height: 550
-	});
-   */
 
 	config.matchWebGLToCanvasSize = false;
 
@@ -68,7 +66,9 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 						canvasRef.current,
 						{ ...config },
 						() => {}
-					);
+					).then((unityInstance: any) => {
+						setUnityInstance(unityInstance);
+					});
 				} catch (message) {
 					alert(message);
 				}
