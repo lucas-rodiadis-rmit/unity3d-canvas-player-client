@@ -37,7 +37,7 @@
 
 .unity-player-control-bar .center-section {
 	position: absolute;
-	left: 50%;
+	left: 48.5%;
 	transform: translateX(-50%);
 	display: flex;
 	align-items: center;
@@ -75,4 +75,17 @@
 	offset-position: 5px;
 	transition-duration: 0.3s;
 	opacity: 0.5;
+}
+
+.control-bar-toggle-button {
+	width: 150px;
+	height: 40px;
+	background: #3498db;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	position: relative;
+	overflow: hidden;
+	background-color: red;
+	left: 44%;
+	position: absolute;
 }
