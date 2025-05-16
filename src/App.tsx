@@ -1,4 +1,9 @@
-import { JSX, useEffect, useState } from "react";
+import {
+	JSX,
+	useCallback,
+	useEffect,
+	useState
+} from "react";
 import "./App.css";
 
 import ControlBar from "./components/ControlBar";
@@ -17,11 +22,28 @@ declare global {
 	}
 }
 
+// UnityInstance interface to define the Unity instance methods
+interface UnityInstance {
+	SetFullscreen: (fullscreen: number) => void;
+}
+
 function App() {
+	// Auth state for application
 	const [auth, _setAuth] = useState(true);
 	const [player, setApp] = useState<JSX.Element | null>(
 		null
 	);
+	
+	// State for unity instance
+	const [unityInstance, setUnityInstance] =
+		useState<UnityInstance | null>(null);
+
+	// Function (callback) to set fullscreen mode
+	const makeFullScreen = useCallback(() => {
+		if (unityInstance !== null) {
+			unityInstance.SetFullscreen(1);
+		}
+	}, [unityInstance]);
 
 	useEffect(() => {
 		let config: WindowConfig | null = null;
@@ -60,6 +82,7 @@ function App() {
 				config={DefaultUnityPlayerConfig(
 					config.buildUrl
 				)}
+				setUnityInstance={setUnityInstance}
 			/>
 		);
 	}, []);
@@ -67,7 +90,9 @@ function App() {
 	return (
 		<>
 			<div className="unity-player-main">
-				<ControlBar />
+				<ControlBar
+					makeFullScreen={makeFullScreen}
+				/>
 
 				{auth ? (
 					player || (
