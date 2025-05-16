@@ -15,25 +15,8 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 	return (
 		<div>
 			{!visible && (
-<<<<<<< HEAD
 				<div className="center-section">
 					<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
-=======
-				<div
-					className="center-section"
-					onClick={toggleVisible}
-				>
-					<div className="logo">
-						<img
-							src={`${RESOURCES_URL}//unity-logo.png`}
-							alt="Unity"
-							style={{
-								height: "36px",
-								cursor: "pointer"
-							}}
-						/>
-					</div>
->>>>>>> dev
 				</div>
 			)}
 
@@ -46,7 +29,6 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 							<span>s1234567</span>
 						</div>
 
-<<<<<<< HEAD
 						<div
 							className="center-section"
 							onClick={toggleVisible}
@@ -68,20 +50,6 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 								className="icon"
 								title="Restart"
 								src={`${RESOURCES_URL}/reload-icon.png`}
-=======
-					<div
-						className="center-section"
-						onClick={toggleVisible}
-					>
-						<div className="logo">
-							<img
-								src={`${RESOURCES_URL}//unity-logo.png`}
-								alt="Unity"
-								style={{
-									height: "36px",
-									cursor: "pointer"
-								}}
->>>>>>> dev
 							/>
 							<div className="divider"></div>
 							<img
@@ -105,38 +73,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 							<div className="divider"></div>
 						</div>
 					</div>
-<<<<<<< HEAD
 					<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
-=======
-
-					<div className="right-section">
-						<img
-							className="icon"
-							title="Restart"
-							src={`${RESOURCES_URL}/reload-icon.png`}
-						/>
-						<div className="divider"></div>
-						<img
-							className="icon"
-							title="Fullscreen"
-							src={`${RESOURCES_URL}/fullscreen-icon.png`}
-							onClick={() => makeFullScreen()}
-						></img>
-						<div className="divider"></div>
-						<img
-							className="icon"
-							title="Menu"
-							src={`${RESOURCES_URL}/options-icon.png`}
-						></img>
-						<div className="divider"></div>
-						<img
-							className="icon"
-							title="Close"
-							src={`${RESOURCES_URL}/cross-icon.png`}
-						></img>
-						<div className="divider"></div>
-					</div>
->>>>>>> dev
 				</div>
 			)}
 		</div>
