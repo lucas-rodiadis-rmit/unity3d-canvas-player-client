@@ -10,7 +10,6 @@ import { LTIContentItem, LTIEmbedRequestMessage } from "../types/LTI";
 import "./EmbedSelection.css"
 
 
-// </head>
 function EmbedSelection() {
 	const embedUrl = "REPLACE_ME";
 	const returnUrl = "REPLACE_ME";

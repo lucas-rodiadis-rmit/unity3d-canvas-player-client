@@ -4,7 +4,8 @@ import {
 	useEffect,
 	useState
 } from "react";
-import "./App.css";
+
+// import "./App.css";
 
 import ControlBar from "./components/ControlBar";
 
@@ -33,7 +34,7 @@ function App() {
 	const [player, setApp] = useState<JSX.Element | null>(
 		null
 	);
-	
+
 	// State for unity instance
 	const [unityInstance, setUnityInstance] =
 		useState<UnityInstance | null>(null);
