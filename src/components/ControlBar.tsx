@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { RESOURCES_URL } from "../constants";
 import "./ControlBar.css";
 
 interface ControlBarProps {
@@ -21,7 +20,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 				>
 					<div className="logo">
 						<img
-							src={`${RESOURCES_URL}//unity-logo.png`}
+							src="/images/unity-logo.png"
 							alt="Unity"
 							style={{
 								height: "36px",
@@ -46,7 +45,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 					>
 						<div className="logo">
 							<img
-								src={`${RESOURCES_URL}//unity-logo.png`}
+								src="/images/unity-logo.png"
 								alt="Unity"
 								style={{
 									height: "36px",
@@ -60,26 +59,26 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 						<img
 							className="icon"
 							title="Restart"
-							src={`${RESOURCES_URL}/reload-icon.png`}
+							src="/images/reload-icon.png"
 						/>
 						<div className="divider"></div>
 						<img
 							className="icon"
 							title="Fullscreen"
-							src={`${RESOURCES_URL}/fullscreen-icon.png`}
+							src="/images/fullscreen-icon.png"
 							onClick={() => makeFullScreen()}
 						></img>
 						<div className="divider"></div>
 						<img
 							className="icon"
 							title="Menu"
-							src={`${RESOURCES_URL}/options-icon.png`}
+							src="/images/options-icon.png"
 						></img>
 						<div className="divider"></div>
 						<img
 							className="icon"
 							title="Close"
-							src={`${RESOURCES_URL}/cross-icon.png`}
+							src="/images/cross-icon.png"
 						></img>
 						<div className="divider"></div>
 					</div>

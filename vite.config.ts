@@ -19,7 +19,7 @@ export default ({ mode }: { mode: string }) => {
 	}
 
 	return defineConfig({
-		base: baseUrl,
+		// base: baseUrl,
 		plugins: [react()]
 	});
 };

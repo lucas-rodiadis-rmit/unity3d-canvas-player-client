@@ -4,6 +4,7 @@
 // };
 
 import { useEffect, useState } from "react";
+import { API_URL } from "../constants";
 
 type APIStatus = "LOADING" | "ERROR" | "SUCCESS";
 
@@ -67,6 +68,9 @@ export async function pingURL<T>({
 
 	if (res.ok) {
 		const data: T = await res.json();
+
+		console.debug("Received data: ", data);
+
 		return data;
 	} else {
 		throw new Error(
@@ -83,8 +87,7 @@ function useAPI<T>(props: UseAPIProps): APIResponse<T> {
 	});
 
 	useEffect(() => {
-		// TODO: Move this into env
-		const URL = `https://canvasunityplayer.hudini.online/${props.endpoint}`;
+		const URL = `${API_URL}/${props.endpoint}`;
 
 		pingURL({
 			method: props.method,
