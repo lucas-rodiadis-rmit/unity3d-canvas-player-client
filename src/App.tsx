@@ -52,31 +52,31 @@ function App() {
 		}
 	}, [unityInstance]);
 
+	if (!auth) return (<div>
+		You are not authorised to view this
+		content.
+	</div>);
+
+
 	return (
-		<div className="unity-player-main">
-
-			{!auth ?
-				<div>
-					You are not authorised to view this
-					content.
-				</div>
-				:
-
-				config !== null ?
-					<>
-						<ControlBar
-							makeFullScreen={makeFullScreen}
-						/>
+		<>
+			<ControlBar
+				makeFullScreen={makeFullScreen}
+			/>
+			<div className="unity-player-main">
+				{
+					config !== null ?
 						<UnityPlayer
 							config={DefaultUnityPlayerConfig(
 								config.buildUrl
 							)}
 							setUnityInstance={setUnityInstance}
 						/>
-					</> :
-					(<div>No player available.</div>)
-			}
-		</div>
+						:
+						(<div>No player available.</div>)
+				}
+			</div >
+		</>
 	);
 }
 

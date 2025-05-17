@@ -12,7 +12,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 	const toggleVisible = () => setVisible(!visible);
 
 	return (
-		<div>
+		<>
 			{!visible && (
 				<div
 					className="center-section"
@@ -84,7 +84,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 					</div>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
 

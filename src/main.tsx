@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import './index.css';
+// import './index.css';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 				{/* <Route path="/register" element={<XMLGenerator />} /> */}
 				<Route path="/unity-player/:project_id" element={<App />} />
 				{/* <Route path="/embed" element={<EmbedSelection />} /> */}
-				<Route path="*" element={<>bruh</>} />
+				<Route path="*" element={<>Invalid route.</>} />
 			</Routes>
 		</BrowserRouter>
 	</React.StrictMode>
