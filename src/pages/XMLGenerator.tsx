@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import "./XMLGenerator.css"
+import { config } from "../config/config";
 
 type XMLConfigOptions = {
 	toolName: string;
@@ -10,7 +11,13 @@ type XMLConfigOptions = {
 };
 
 function XMLGenerator() {
-	const [xmlConfig, setXmlConfig] = useState<XMLConfigOptions>({ toolName: "Unity Player", launchUrl: "empty", privacyLevel: "public", toolId: "public" });
+	const [xmlConfig, setXmlConfig] = useState<XMLConfigOptions>({
+		toolName: "Unity Player",
+		launchUrl:
+			config.DOMAIN_URL + "/embed",
+		privacyLevel: "public",
+		toolId: "public"
+	});
 
 	const domainUrl: string = (() => {
 		try {
@@ -72,7 +79,7 @@ function XMLGenerator() {
 			<input
 				type="text"
 				name="launchUrl"
-				value="https://canvasunityplayer.hudini.online/embed"
+				value={xmlConfig.launchUrl}
 				onChange={handleChange}
 			/>
 		</div>
@@ -91,7 +98,7 @@ function XMLGenerator() {
 			<input
 				type="text"
 				name="toolId"
-				value="public"
+				value={xmlConfig.toolId}
 				onChange={handleChange}
 			/>
 		</div>
