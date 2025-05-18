@@ -35,17 +35,17 @@ const DEFAULT_API_RESPONSE: APILoading = {
 	status: "LOADING"
 } as const;
 
-interface UseAPIProps {
+interface UseAPIProps<T> {
 	method: "GET" | "POST" | "DELETE";
 	endpoint: string;
-	body?: any | string;
+	body?: T | string;
 }
 
 export async function pingURL<T>({
 	method = "GET",
 	endpoint,
 	body
-}: UseAPIProps) {
+}: UseAPIProps<T>): Promise<T> {
 	const requestOptions: RequestInit = {
 		method: method,
 		headers: {
@@ -79,7 +79,16 @@ export async function pingURL<T>({
 	}
 }
 
-function useAPI<T>(props: UseAPIProps): APIResponse<T> {
+export async function pingAPI<T>(
+	props: UseAPIProps<T>
+): Promise<Awaited<T>> {
+	return await pingURL({
+		...props,
+		endpoint: `${API_URL}/${props.endpoint}`
+	});
+}
+
+function useAPI<T>(props: UseAPIProps<T>): APIResponse<T> {
 	const [response, setResponse] = useState<
 		APIResponse<T>
 	>({

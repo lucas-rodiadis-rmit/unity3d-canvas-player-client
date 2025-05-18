@@ -10,6 +10,12 @@ import App from './App.tsx';
 import XMLGenerator from './pages/XMLGenerator.tsx';
 import EmbedSelection from './pages/EmbedSelection.tsx';
 
+declare global {
+	interface Window {
+		LOCAL_DATA: { token?: string };
+	}
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<BrowserRouter>

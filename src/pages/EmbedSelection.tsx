@@ -4,44 +4,44 @@
 // 	<title>Insert Unity3D Player</title>
 //
 
-import { pingURL } from "../hooks/useApi";
-import { LTIContentItem, LTIEmbedRequestMessage } from "../types/LTI";
+import { pingAPI } from "../hooks/useApi";
 
 import "./EmbedSelection.css"
 
 
+// TODO: Put this in a middleware package for both the front and back end
+interface CreateEmbedPayload {
+	token: string;
+
+	project_id: string;
+	presentation_type: "frame" | "iframe";
+	width?: number;
+	height?: number;
+
+	/* OTHER OPTIONS CAN BE ADDED HERE */
+	// allow_fullscreen: boolean;
+}
+
+
 function EmbedSelection() {
-	const embedUrl = "REPLACE_ME";
-	const returnUrl = "REPLACE_ME";
-
 	async function submitEmbedData(useIFrame: boolean) {
-		const graph: LTIContentItem = {
-			"@type": "LtiLinkItem",
-			"@id": embedUrl,
-			"url": embedUrl,
-			"title": "Unity Player Embed",
-			"text": "Play Now!",
-			"mediaType": "application/vnd.ims.lti.v1.ltilink",
-			"placementAdvice": { presentationDocumentTarget: "frame" }
-		};
 
-		graph.placementAdvice = useIFrame ? {
-			"presentationDocumentTarget": "iframe",
-			"displayWidth": 1067,
-			"displayHeight": 600
-		} : {
-			"presentationDocumentTarget": "frame"
+		if (!window.LOCAL_DATA.token) {
+			alert("No token available. Try refreshing the page.");
+			return;
 		}
 
-		const embedMessage: LTIEmbedRequestMessage = {
-			lti_message_type: "ContentItemSelection",
-			lti_version: "LTI-1p0",
-			mediaType: "application/vnd.ims.lti.v1.ltilink",
-			content_items: [graph]
+		const embedRequest: CreateEmbedPayload = {
+			token: window.LOCAL_DATA.token,
+			presentation_type: useIFrame ? "iframe" : "frame",
+			project_id: "test123456",
+			width: useIFrame ? 1067 : undefined,
+			height: useIFrame ? 600 : undefined,
 		};
 
 		try {
-			await pingURL({ method: "POST", endpoint: returnUrl, body: embedMessage });
+			const data = await pingAPI({ method: "POST", endpoint: "embed", body: embedRequest });
+			console.debug("Data received: ", data);
 		}
 		catch (error) {
 			console.error("Unable to submit embed data: ", error);
