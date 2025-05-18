@@ -1,7 +1,5 @@
 import {
-	JSX,
 	useCallback,
-	useEffect,
 	useMemo,
 	useState
 } from "react";
