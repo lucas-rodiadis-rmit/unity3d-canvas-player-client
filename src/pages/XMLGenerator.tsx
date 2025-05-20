@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import "./XMLGenerator.css"
-import { config } from "../config/config";
 
 type XMLConfigOptions = {
 	toolName: string;
@@ -23,9 +22,9 @@ function XMLGenerator() {
 		try {
 			return new URL(xmlConfig.launchUrl).hostname;
 		} catch (error) {
+			console.error("Invalid URL:", xmlConfig.launchUrl, error);
+			return "INVALID_URL";
 		}
-
-		return "INVALID_URL"
 	})();
 
 	// Generic handler for all inputs/selects
@@ -51,16 +50,6 @@ function XMLGenerator() {
 	}
 
 	return (<>
-		{/*
-		<head>
-			<meta charSet="UTF-8" />
-			<meta
-				name="viewport"
-				content="width=device-width, initial-scale=1.0"
-			/>
-			<title>Canvas Unity Player</title>
-		</head>
-		*/}
 
 		<h1>Canvas Unity Player</h1>
 
@@ -102,17 +91,6 @@ function XMLGenerator() {
 				onChange={handleChange}
 			/>
 		</div>
-
-		{
-			/*
-		<button
-			className="button-generate"
-			onClick={generateXML}
-		>
-			Generate XML
-		</button>
-		*/
-		}
 
 		<div className="xml-box" id="xmlBox">
 			{
