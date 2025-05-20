@@ -12,7 +12,7 @@ import EmbedSelection from './pages/EmbedSelection.tsx';
 
 declare global {
 	interface Window {
-		LOCAL_DATA: { token?: string };
+		LOCAL_DATA: { token?: string, returnUrl?: string };
 	}
 }
 

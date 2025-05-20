@@ -1,11 +1,4 @@
-
-// <head>
-// 	<meta charset="utf-8" />
-// 	<title>Insert Unity3D Player</title>
-//
-
-import { pingAPI } from "../hooks/useApi";
-
+import useEmbedData from "../hooks/useEmbedData"
 import "./EmbedSelection.css"
 
 
@@ -24,29 +17,8 @@ interface CreateEmbedPayload {
 
 
 function EmbedSelection() {
-	async function submitEmbedData(useIFrame: boolean) {
-
-		if (!window.LOCAL_DATA.token) {
-			alert("No token available. Try refreshing the page.");
-			return;
-		}
-
-		const embedRequest: CreateEmbedPayload = {
-			token: window.LOCAL_DATA.token,
-			presentation_type: useIFrame ? "iframe" : "frame",
-			project_id: "test123456",
-			width: useIFrame ? 1067 : undefined,
-			height: useIFrame ? 600 : undefined,
-		};
-
-		try {
-			const data = await pingAPI({ method: "POST", endpoint: "embed", body: embedRequest });
-			console.debug("Data received: ", data);
-		}
-		catch (error) {
-			console.error("Unable to submit embed data: ", error);
-		}
-	}
+	// 
+	const { submitEmbedData } = useEmbedData();
 
 	return (<>
 		<h2>Embed Unity3D Player</h2>
@@ -59,38 +31,3 @@ function EmbedSelection() {
 }
 
 export default EmbedSelection
-
-/*
-	const iFrameData = {
-		"@context": "http://purl.imsglobal.org/ctx/lti/v1/ContentItem",
-		"@graph": [
-			{
-				"@type": "LtiLinkItem",
-				"@id": embedUrl,
-				"url": embedUrl,
-				"title": "Unity Player Embed",
-				"text": "Play Now!",
-				"mediaType": "application/vnd.ims.lti.v1.ltilink",
-				"placementAdvice": {
-					"presentationDocumentTarget": "iframe",
-					"displayWidth": 1067,
-					"displayHeight": 600
-				}
-			}
-		]
-	};
-
-	const frameData = {
-		"@context": "http://purl.imsglobal.org/ctx/lti/v1/ContentItem",
-		"@graph": [
-			{
-				"@type": "LtiLinkItem",
-				"@id": embedUrl,
-				"url": embedUrl,
-				"title": "Unity Player Embed",
-				"text": "Play Now!",
-				"mediaType": "application/vnd.ims.lti.v1.ltilink",
-			}
-		]
-	};
-*/
