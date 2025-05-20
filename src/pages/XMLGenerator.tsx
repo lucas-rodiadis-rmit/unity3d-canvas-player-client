@@ -14,7 +14,7 @@ function XMLGenerator() {
 	const [xmlConfig, setXmlConfig] = useState<XMLConfigOptions>({
 		toolName: "Unity Player",
 		launchUrl:
-			config.DOMAIN_URL + "/embed",
+			config.DOMAIN_URL + "embed",
 		privacyLevel: "public",
 		toolId: "public"
 	});
