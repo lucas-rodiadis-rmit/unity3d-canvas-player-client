@@ -51,10 +51,10 @@ function useEmbedData() {
 			const data = await pingURL({
 				method: "POST",
 				endpoint: window.LOCAL_DATA.returnUrl, // Full URL to POST to
-				// headers: {
-				// 	"Content-Type":
-				// 		"application/x-www-form-urlencoded"
-				// },
+				headers: {
+					"Content-Type":
+						"application/x-www-form-urlencoded"
+				},
 				body: formData.toString()
 			});
 

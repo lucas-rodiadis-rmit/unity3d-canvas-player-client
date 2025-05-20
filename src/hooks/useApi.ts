@@ -37,6 +37,7 @@ const DEFAULT_API_RESPONSE: APILoading = {
 
 interface UseAPIProps<T> {
 	method: "GET" | "POST" | "DELETE";
+	headers?: HeadersInit;
 	endpoint: string;
 	body?: T | string;
 }
@@ -44,13 +45,13 @@ interface UseAPIProps<T> {
 export async function pingURL<T>({
 	method = "GET",
 	endpoint,
+	headers,
 	body
 }: UseAPIProps<T>): Promise<T> {
 	const requestOptions: RequestInit = {
 		method: method,
 		headers: {
-			"Content-Type": "application/json"
-			// ,Origin: "http://localhost:5173"
+			...headers
 		},
 		mode: "cors" // Set the mode to 'cors' for CORS request
 	};
