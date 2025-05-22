@@ -1,5 +1,6 @@
 import { JSX, useMemo, useState } from "react";
 import "./ProjectUploader.css";
+import { pingAPI } from "../hooks/useApi";
 
 declare module "react" {
 	interface InputHTMLAttributes<T>
@@ -38,7 +39,7 @@ function ProjectUploader() {
 			showFPS: false
 		});
 
-	const handleUploadClick = () => {
+	const handleUploadClick = async () => {
 		// Show alerts if anything is missing or invalid
 		if (
 			!unityAppPayload.files ||
@@ -61,7 +62,7 @@ function ProjectUploader() {
 			return;
 		}
 
-		console.debug("Implement uploading");
+		await pingAPI<{}>({ endpoint: "unity-config/upload", method: "POST", body: unityAppPayload });
 	};
 
 	// Generic handler for all inputs/selects
