@@ -62,6 +62,9 @@ function ProjectUploader() {
 			return;
 		}
 
+		console.debug("Sending payload to server: ", unityAppPayload);
+
+
 		await pingAPI<{}>({ endpoint: "unity-config/upload", method: "POST", body: unityAppPayload });
 	};
 
