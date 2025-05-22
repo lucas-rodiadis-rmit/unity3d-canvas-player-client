@@ -14,74 +14,65 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 	return (
 		<>
 			{!visible && (
-				<div
-					className="center-section"
-					onClick={toggleVisible}
-				>
-					<div className="logo">
-						<img
-							src="/images/unity-logo.png"
-							alt="Unity"
-							style={{
-								height: "36px",
-								cursor: "pointer"
-							}}
-						/>
-					</div>
+				<div className="center-section">
+					<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
 				</div>
 			)}
 
 			{visible && (
-				<div className="unity-player-control-bar">
-					<div className="left-section">
-						<span>FPS: 30</span>
-						<div className="divider"></div>
-						<span>s1234567</span>
-					</div>
+				<div>
+					<div className="unity-player-control-bar">
+						<div className="left-section">
+							<span>FPS: 30</span>
+							<div className="divider"></div>
+							<span>s1234567</span>
+						</div>
 
-					<div
-						className="center-section"
-						onClick={toggleVisible}
-					>
-						<div className="logo">
+						<div
+							className="center-section"
+							onClick={toggleVisible}
+						>
+							<div className="logo">
+								<img
+									src={`/images//unity-logo.png`}
+									alt="Unity"
+									style={{
+										height: "36px",
+										cursor: "pointer"
+									}}
+								/>
+							</div>
+						</div>
+
+						<div className="right-section">
 							<img
-								src="/images/unity-logo.png"
-								alt="Unity"
-								style={{
-									height: "36px",
-									cursor: "pointer"
-								}}
+								className="icon"
+								title="Restart"
+								src={`/images/reload-icon.png`}
 							/>
+							<div className="divider"></div>
+							<img
+								className="icon"
+								title="Fullscreen"
+								src={`/images/fullscreen-icon.png`}
+								onClick={() => makeFullScreen()}
+							></img>
+							<div className="divider"></div>
+							<img
+								className="icon"
+								title="Menu"
+								src={`/images/options-icon.png`}
+							></img>
+							<div className="divider"></div>
+							<img
+								className="icon"
+								title="Close"
+								src={`/images/cross-icon.png`}
+							></img>
+							<div className="divider"></div>
 						</div>
 					</div>
-
-					<div className="right-section">
-						<img
-							className="icon"
-							title="Restart"
-							src="/images/reload-icon.png"
-						/>
-						<div className="divider"></div>
-						<img
-							className="icon"
-							title="Fullscreen"
-							src="/images/fullscreen-icon.png"
-							onClick={() => makeFullScreen()}
-						></img>
-						<div className="divider"></div>
-						<img
-							className="icon"
-							title="Menu"
-							src="/images/options-icon.png"
-						></img>
-						<div className="divider"></div>
-						<img
-							className="icon"
-							title="Close"
-							src="/images/cross-icon.png"
-						></img>
-						<div className="divider"></div>
-					</div>
+					<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
 				</div>
 			)}
 		</>
