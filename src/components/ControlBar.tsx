@@ -63,7 +63,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 					></img>
 				</div>
 			</div>
-			<div className={`control-bar-toggle-button ${visible ? " visible" : "hidden"}`} onClick={toggleVisible} ></div>
+			<div className={`control-bar-toggle-button ${visible ? "opened" : "closed"}`} onClick={toggleVisible} ></div>
 		</div>
 	);
 }
