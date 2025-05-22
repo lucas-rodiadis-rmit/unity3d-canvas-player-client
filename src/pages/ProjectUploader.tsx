@@ -1,46 +1,102 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import "./ProjectUploader.css";
 
+declare module "react" {
+	interface InputHTMLAttributes<T>
+		extends HTMLAttributes<T> {
+		webkitdirectory?: string;
+	}
+}
+
+interface CreateUnityAppPayload {
+	name: string;
+
+	// Extents options
+	embedWidth?: number;
+	embedHeight?: number;
+
+	// Control options
+	allowResizing: boolean;
+	allowFullscreen: boolean;
+	allowReloading: boolean;
+
+	files: FileList | null;
+
+	// Analytic options
+	showFPS: boolean;
+}
+
 function ProjectUploader() {
-	// Stores and updates data input
-	const [selectedFile, setSelectedFile] =
-		useState<File | null>(null);
-	const [projectName, setProjectName] = useState("");
-	const [width, setWidth] = useState<number>(0);
-	const [height, setHeight] = useState<number>(0);
-	// Handles file selection
-	const handleFileChange = (
-		event: ChangeEvent<HTMLInputElement>
-	) => {
-		if (!event.currentTarget.files) return;
-		if (event.currentTarget.files.length > 0) {
-			if (!event.currentTarget.files[0]) return;
-			setSelectedFile(event.currentTarget.files[0]);
-		} else {
-			setSelectedFile(null);
-		}
-	};
+	const [unityAppPayload, setUnityAppPayload] =
+		useState<CreateUnityAppPayload>({
+			name: "",
+			files: null,
+
+			allowFullscreen: false,
+			allowReloading: false,
+			allowResizing: false,
+			showFPS: false
+		});
+
+	const [folder, setFolder] = useState<
+		string | undefined
+	>();
 
 	const handleUploadClick = () => {
 		// Show alerts if anything is missing or invalid
-		if (!selectedFile) {
+		if (
+			!unityAppPayload.files ||
+			!unityAppPayload.files.length
+		) {
 			alert("Please select a file.");
 			return;
-		}
-		if (!projectName.trim()) {
+		} else if (!unityAppPayload.name.trim()) {
 			alert("Please enter a project name.");
 			return;
-		}
-		if (
-			!width ||
-			Number(width) <= 0 ||
-			!height ||
-			Number(height) <= 0
+		} else if (
+			(unityAppPayload.embedWidth !== undefined &&
+				unityAppPayload.embedWidth < 0) ||
+			(unityAppPayload.embedHeight !== undefined &&
+				unityAppPayload.embedHeight < 0)
 		) {
 			alert(
 				"Width and Height must be positive numbers."
 			);
 			return;
+		}
+
+		console.debug("Implement uploading");
+	};
+
+	// Generic handler for all inputs/selects
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		// Get the name of the html input which was changed, and its new value
+		const { name, checked, value, type, files } =
+			e.target as HTMLInputElement;
+
+		if (type === "file") {
+			setUnityAppPayload((prev) => ({
+				...prev,
+				files
+			}));
+			return;
+		} else if (e.target.type === "checkbox") {
+			setUnityAppPayload((prev) => ({
+				...prev,
+				[name]: checked
+			}));
+		} else if (e.target.type === "number") {
+			setUnityAppPayload((prev) => ({
+				...prev,
+				[name]: Number(value)
+			}));
+		} else {
+			setUnityAppPayload((prev) => ({
+				...prev,
+				[name]: value
+			}));
 		}
 	};
 
@@ -52,18 +108,17 @@ function ProjectUploader() {
 				<h3>Path:</h3>
 				<input
 					type="text"
-					placeholder="/home/user/ClinicSim"
-					value={
-						selectedFile
-							? selectedFile.name
-							: ""
-					}
+					placeholder="/my/unity/project/dir"
+					value={folder}
+					style={{ pointerEvents: "none" }}
 					readOnly
 				/>
 				<input
+					id="folder-selector"
 					type="file"
-					onChange={handleFileChange}
 					style={{ marginLeft: "10px" }}
+					webkitdirectory=""
+					onChange={handleChange}
 				/>
 			</div>
 
@@ -72,10 +127,9 @@ function ProjectUploader() {
 				<input
 					type="text"
 					placeholder="Clinic Sim"
-					value={projectName}
-					onChange={(e) =>
-						setProjectName(e.target.value)
-					}
+					name="name"
+					value={unityAppPayload.name}
+					onChange={handleChange}
 				/>
 			</div>
 
@@ -84,46 +138,70 @@ function ProjectUploader() {
 				<input
 					type="number"
 					placeholder="1280"
-					value={width}
-					onChange={(e) =>
-						setWidth(Number(e.target.value))
-					}
+					value={unityAppPayload.embedWidth}
+					name="embedWidth"
+					onChange={handleChange}
 				/>{" "}
 				x{" "}
 				<input
 					type="number"
 					placeholder="720"
-					value={height}
-					onChange={(e) =>
-						setHeight(Number(e.target.value))
-					}
+					value={unityAppPayload.embedHeight}
+					name="embedHeight"
+					onChange={handleChange}
 				/>
 			</div>
 
 			<div className="checkbox-group">
 				<label>
-					<input type="checkbox" />
+					<input
+						type="checkbox"
+						name="allowResizing"
+						onChange={handleChange}
+						checked={
+							unityAppPayload.allowResizing
+						}
+					/>
 					Allow Resizing
 				</label>
 			</div>
 
 			<div className="checkbox-group">
 				<label>
-					<input type="checkbox" />
+					<input
+						type="checkbox"
+						name="allowFullscreen"
+						onChange={handleChange}
+						checked={
+							unityAppPayload.allowFullscreen
+						}
+					/>
 					Allow Fullscreen
 				</label>
 			</div>
 
 			<div className="checkbox-group">
 				<label>
-					<input type="checkbox" />
+					<input
+						type="checkbox"
+						name="showFPS"
+						onChange={handleChange}
+						checked={unityAppPayload.showFPS}
+					/>
 					Show FPS
 				</label>
 			</div>
 
 			<div className="checkbox-group">
 				<label>
-					<input type="checkbox" />
+					<input
+						type="checkbox"
+						name="allowReloading"
+						onChange={handleChange}
+						checked={
+							unityAppPayload.allowReloading
+						}
+					/>
 					Allow Reloading
 				</label>
 			</div>
