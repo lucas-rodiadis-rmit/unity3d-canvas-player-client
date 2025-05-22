@@ -1,3 +1,10 @@
+.control-bar-group {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 97vw;
+}
+
 .unity-player-control-bar {
 	display: flex;
 	align-items: center;
@@ -32,7 +39,7 @@
 .unity-player-control-bar .right-section {
 	display: flex;
 	align-items: center;
-	gap: 16px;
+	gap: 12px;
 }
 
 .unity-player-control-bar .center-section {
@@ -51,7 +58,7 @@
 	height: 24px;
 	width: 1px;
 	background-color: #999;
-	margin: 0 12px;
+	margin: 0 3px;
 }
 
 .unity-player-control-bar .logo {
@@ -78,7 +85,7 @@
 }
 
 .control-bar-toggle-button {
-	width: 150px;
+	width: 12vw;
 	height: 40px;
 	background: #3498db;
 	border-bottom-left-radius: 50px;
