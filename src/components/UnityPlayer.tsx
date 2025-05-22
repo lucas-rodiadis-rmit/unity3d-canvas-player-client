@@ -3,38 +3,23 @@ import { useEffect, useRef } from "react";
 import "./UnityPlayer.css";
 
 import useCurrentSize from "../hooks/useCurrentSize";
-import { createUnityInstance } from "./loader";
+import UnityConfig from "../types/UnityConfig";
 
 export const defaultBuildUrl: string = "/ClinicSim/Build";
 export const defaultLoaderUrl: string =
 	defaultBuildUrl + "/buildweb.loader.js";
 
-export const DefaultUnityPlayerConfig = {
-	dataUrl: defaultBuildUrl + "/buildweb.data.gz",
-	frameworkUrl:
-		defaultBuildUrl + "/buildweb.framework.js.gz",
-	codeUrl: defaultBuildUrl + "/buildweb.wasm.gz",
-	streamingAssetsUrl: "StreamingAssets",
-	companyName: "RMIT",
-	productName: "Nursing XR",
-	productVersion: "1"
-	// showBanner: unityShowBanner,
-};
-
 interface UnityPlayerProps {
-	// The url that the build is hosted on
-	url: string;
-
-	// The Unity config
-	config: any;
+	config: UnityConfig;
+	setUnityInstance: React.Dispatch<
+		React.SetStateAction<any | null>
+	>;
 }
 
-type Rect = {
-	width: number;
-	height: number;
-};
-
-function UnityPlayer({ config }: UnityPlayerProps) {
+function UnityPlayer({
+	config,
+	setUnityInstance
+}: UnityPlayerProps) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(
 		null
 	);
@@ -44,13 +29,6 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 	);
 
 	const { width, height } = useCurrentSize();
-
-	/*
-	const [rect, setRect] = useState<Rect>({
-		width: 960,
-		height: 550
-	});
-   */
 
 	config.matchWebGLToCanvasSize = false;
 
@@ -62,15 +40,44 @@ function UnityPlayer({ config }: UnityPlayerProps) {
 	useEffect(() => {
 		if (!canvasRef.current) return;
 
-		createUnityInstance(
-			canvasRef.current,
-			{ ...config },
-			() => {}
-		)
-			.then((_unityInstance) => {})
-			.catch((message) => {
-				alert(message);
-			});
+		const runLoader = async () => {
+			const loaderUrl: string = (
+				config.buildUrl + "/buildweb.loader.js"
+			);
+			console.log(
+				`Using Unity loader from ${loaderUrl}`
+			);
+
+			const script = document.createElement("script");
+			script.src = loaderUrl;
+			script.onload = async () => {
+				const createUnityInstance = (window as any)
+					.createUnityInstance;
+
+				if (!createUnityInstance) {
+					console.error(
+						"createUnityInstance function was not found in the loader js."
+					);
+					return;
+				}
+
+				try {
+					await createUnityInstance(
+						canvasRef.current,
+						{ ...config },
+						() => { }
+					).then((unityInstance: any) => {
+						setUnityInstance(unityInstance);
+					});
+				} catch (message) {
+					alert(message);
+				}
+			};
+
+			document.body.appendChild(script);
+		};
+
+		runLoader();
 	}, [canvasRef]);
 
 	console.log("Re-rendering Unity Component");

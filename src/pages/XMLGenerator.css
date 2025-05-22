@@ -1,0 +1,60 @@
+body {
+	font-family: Arial, sans-serif;
+	padding: 2rem;
+	max-width: 800px;
+	margin: auto;
+	background: #f9f9f9;
+}
+
+h1 {
+	text-align: center;
+}
+
+.input-group {
+	margin-bottom: 1rem;
+}
+
+.input-group label {
+	display: block;
+	margin-bottom: 0.25rem;
+	font-weight: bold;
+}
+
+.input-group input,
+.input-group select {
+	width: 100%;
+	padding: 0.5rem;
+	font-size: 1rem;
+}
+
+.button-generate,
+.copy-button {
+	padding: 0.5rem 1rem;
+	margin-top: 1rem;
+	font-size: 1rem;
+	cursor: pointer;
+	background-color: #4caf50;
+	border: none;
+	color: white;
+}
+
+.copy-button {
+	background-color: #2196f3;
+}
+
+.xml-box {
+	margin-top: 1rem;
+	background: #fff;
+	padding: 1rem;
+	border: 1px solid #ccc;
+	white-space: pre-wrap;
+	font-family: monospace;
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+.instructions {
+	margin-top: 2rem;
+	background: #eef;
+	padding: 1rem;
+}
