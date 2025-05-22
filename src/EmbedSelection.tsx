@@ -6,6 +6,7 @@ const EmbedSelection: React.FC = () => {
   const [selected, setSelected] = useState(projects[0]);
   const [allowFullscreen, setAllowFullscreen] = useState(false);
   const [showFPS, setShowFPS] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
   const handleAddProject = () => {
     const name = prompt("Enter new Unity project name:");
@@ -21,14 +22,23 @@ const EmbedSelection: React.FC = () => {
     );
   };
 
+  const handleZipUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setSelectedFileName(file.name);
+
+    // Simulated upload
+    setTimeout(() => {
+      alert(`Upload successful! File: ${file.name}`);
+    }, 300);
+  };
+
   return (
     <div className="container">
       <h1>Canvas Embed Selection</h1>
 
-      <div className="label-row">
-        Unity Projects:
-      </div>
-
+      <div className="label-row">Unity Projects:</div>
       <div className="select-container">
         <select
           value={selected}
@@ -65,6 +75,29 @@ const EmbedSelection: React.FC = () => {
       <button className="button-submit" onClick={handleSubmit}>
         Add
       </button>
+
+      <div className="upload-container">
+        <input
+          type="file"
+          accept=".zip"
+          style={{ display: "none" }}
+          id="zip-upload"
+          onChange={handleZipUpload}
+        />
+        <button
+          className="upload-button"
+          onClick={() =>
+            document.getElementById("zip-upload")?.click()
+          }
+        >
+          Upload ZIP
+        </button>
+        {selectedFileName && (
+          <div style={{ fontSize: "0.9rem", marginTop: "0.5rem" }}>
+            Last selected: {selectedFileName}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
