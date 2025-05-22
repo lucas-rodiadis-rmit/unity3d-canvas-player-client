@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App.tsx';
 import XMLGenerator from './pages/XMLGenerator.tsx';
 import EmbedSelection from './pages/EmbedSelection.tsx';
+import ProjectUploader from './pages/ProjectUploader.tsx';
 
 declare global {
 	interface Window {
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 				<Route path="/unity-player/:project_id" element={<App />} />
 				<Route path="/embed" element={<EmbedSelection />} />
 				<Route path="*" element={<>Invalid route.</>} />
+				<Route path="/upload" element={<ProjectUploader />} />
 			</Routes>
 		</BrowserRouter>
 	</React.StrictMode>
