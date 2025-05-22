@@ -1,16 +1,18 @@
+/* Control Bar Parent Element */
 .control-bar-group {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 97vw;
+	width: 100vw;
 }
 
+/* Control Bar */
 .unity-player-control-bar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	color: white;
-	padding: 10px 20px;
+	height: 45px;
 	font-family: sans-serif;
 	font-size: 16px;
 
@@ -19,7 +21,23 @@
 	z-index: 1;
 	background-color: #141821;
 	opacity: 0.4;
-	transition: opacity 0.65s ease;
+
+	transform: translateY(0);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Control Bar Animations */
+.unity-player-control-bar.fade-in {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.unity-player-control-bar.fade-out {
+	opacity: 0;
+	transform: translateY(-100%);
+	pointer-events: none;
+	margin: 0;
+	padding: 0;
 }
 
 .unity-player-control-bar:hover {
@@ -31,34 +49,38 @@
 	font-size: max(1.5vh, 15px);
 	text-align: center;
 	font-weight: bold;
-
 	top: 0;
 }
 
-.unity-player-control-bar .left-section,
-.unity-player-control-bar .right-section {
+/* Control Bar Layouts */
+.unity-player-control-bar .left-section {
 	display: flex;
 	align-items: center;
 	gap: 12px;
+	padding-left: 15px;
+}
+
+.unity-player-control-bar .right-section {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding-right: 15px;
 }
 
 .unity-player-control-bar .center-section {
 	position: absolute;
-	left: 48.5%;
+	left: 50%;
 	transform: translateX(-50%);
 	display: flex;
 	align-items: center;
 }
 
-.unity-player-control-bar .left-section {
-	gap: 12px;
-}
-
+/* Control Bar Content */
 .unity-player-control-bar .divider {
-	height: 24px;
-	width: 1px;
-	background-color: #999;
-	margin: 0 3px;
+	width: 2px;
+	height: 45px;
+	margin: 0px 3px;
+	background-color: #777586;
 }
 
 .unity-player-control-bar .logo {
@@ -66,6 +88,7 @@
 	align-items: center;
 	gap: 8px;
 	font-weight: bold;
+	padding: 10px 20px;
 }
 
 .unity-player-control-bar .icon {
@@ -75,6 +98,7 @@
 	mask-position: center;
 	mask-size: contain;
 	transition-duration: 0.3s;
+	padding: 5px;
 }
 
 .unity-player-control-bar .icon:hover {
@@ -84,15 +108,47 @@
 	opacity: 0.5;
 }
 
+/* Toggle Button */
 .control-bar-toggle-button {
 	width: 12vw;
-	height: 40px;
+	height: 35px;
 	background: #3498db;
 	border-bottom-left-radius: 50px;
 	border-bottom-right-radius: 50px;
-	position: relative;
-	overflow: hidden;
-	background-color: red;
-	left: 44%;
 	position: absolute;
+	overflow: hidden;
+	background-color: #141821;
+	left: 44%;
+	opacity: 0.2;
+
+	transform: translateY(0);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Toggle Button Animations */
+.control-bar-toggle-button.opened {
+	transform: translateY(0);
+}
+
+.control-bar-toggle-button.closed {
+	transform: translateY(-45px);
+}
+
+.control-bar-toggle-button:hover {
+	opacity: 1;
+	transition: opacity 0.25s ease;
+	transition-duration: 0.6s;
+}
+
+/* For centering icons in button elements */
+.icon-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
