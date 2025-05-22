@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { JSX, useMemo, useState } from "react";
 import "./ProjectUploader.css";
 
 declare module "react" {
@@ -37,10 +37,6 @@ function ProjectUploader() {
 			allowResizing: false,
 			showFPS: false
 		});
-
-	const [folder, setFolder] = useState<
-		string | undefined
-	>();
 
 	const handleUploadClick = () => {
 		// Show alerts if anything is missing or invalid
@@ -100,19 +96,31 @@ function ProjectUploader() {
 		}
 	};
 
+	const elements: Array<JSX.Element> = useMemo(() => {
+		const elements = [];
+		if (unityAppPayload.files) {
+			for (let i = 0; i < unityAppPayload.files.length; i++) {
+				elements.push(<p>{unityAppPayload.files[i].webkitRelativePath}</p>);
+			}
+		}
+
+		return elements;
+	}, [unityAppPayload.files]);
+
 	return (
 		<div className="project-uploader">
 			<h2>Upload a Unity Project</h2>
 
 			<div className="input-group">
 				<h3>Path:</h3>
-				<input
-					type="text"
-					placeholder="/my/unity/project/dir"
-					value={folder}
-					style={{ pointerEvents: "none" }}
-					readOnly
-				/>
+
+				<div id="filepath-previewer" >
+					<h3 style={{ backgroundColor: elements.length ? "green" : "red" }} >{`${elements.length} files`}</h3>
+					<div id="filepath-previewer-elements">
+						{...elements}
+					</div>
+				</div>
+
 				<input
 					id="folder-selector"
 					type="file"
