@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./MenuModal.css";
 
 interface MenuModalProps {
@@ -8,7 +8,20 @@ interface MenuModalProps {
 }
 
 const MenuModal: React.FC<MenuModalProps> = ({ isOpen, onClose, onResize }) => {
+	const [customHeight, setCustomHeight] = useState<string>("600");
+
 	if (!isOpen) return null;
+
+	const parsedHeight = parseInt(customHeight);
+	const minHeight = 200;
+	const isValid = !isNaN(parsedHeight) && parsedHeight > minHeight;
+
+	const handleCustomResize = () => {
+		if (isValid) {
+			onResize(parsedHeight);
+			onClose();
+		}
+	};
 
 	return (
 		<div className="modal-overlay">
@@ -19,11 +32,22 @@ const MenuModal: React.FC<MenuModalProps> = ({ isOpen, onClose, onResize }) => {
 				<section className="modal-section">
 					<h3 className="section-title">Resizing</h3>
 					<div className="modal-buttons">
-						<button onClick={() => { onResize(400); onClose(); }}>
-							Height: 400px
-						</button>
-						<button onClick={() => { onResize(600); onClose(); }}>
-							Height: 600px
+
+						<input	
+							type="number"
+							min={minHeight}
+							required
+							placeholder={`Enter custom height over ${minHeight}px`}
+							value={customHeight}
+							onChange={(e) => setCustomHeight(e.target.value)}
+							className="custom-input"
+						/>
+
+						<button
+							onClick={handleCustomResize}
+							disabled={!isValid}
+						>
+							Set Custom Height
 						</button>
 					</div>
 				</section>
@@ -32,12 +56,12 @@ const MenuModal: React.FC<MenuModalProps> = ({ isOpen, onClose, onResize }) => {
 				<section className="modal-section">
 					<h3 className="section-title">Other Options</h3>
 					<div className="modal-buttons">
-						<button onClick={() => { onResize(800); onClose(); }}>
+						<button onClick={onClose}>
 							Other Option
 						</button>
 					</div>
 				</section>
-				
+
 				{/* Footer */}
 				<div className="modal-footer">
 					<button className="close-btn" onClick={onClose}>
