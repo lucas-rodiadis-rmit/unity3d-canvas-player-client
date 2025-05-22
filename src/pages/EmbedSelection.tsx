@@ -5,10 +5,16 @@ import useEmbedData from "../hooks/useEmbedData";
 import { useNavigate } from "react-router-dom";
 
 const EmbedSelection: React.FC = () => {
-	const [projects, setProjects] = useState([
+	// TODO: This needs to be replaced with a call to the API
+	// const [projects, setProjects] = useState([
+	// 	"Clinic Sim",
+	// 	"Other"
+	// ]);
+	const projects = [
 		"Clinic Sim",
 		"Other"
-	]);
+	];
+	
 	const [selected, setSelected] = useState(projects[0]);
 	const [allowFullscreen, setAllowFullscreen] =
 		useState(false);
