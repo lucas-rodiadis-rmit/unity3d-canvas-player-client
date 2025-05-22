@@ -1,3 +1,4 @@
+/* Control Bar Parent Element */
 .control-bar-group {
 	position: fixed;
 	top: 0;
@@ -5,6 +6,7 @@
 	width: 100vw;
 }
 
+/* Control Bar */
 .unity-player-control-bar {
 	display: flex;
 	align-items: center;
@@ -19,7 +21,21 @@
 	z-index: 1;
 	background-color: #141821;
 	opacity: 0.4;
-	transition: opacity 0.65s ease;
+
+	transform: translateY(0);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Control Bar Animations */
+.unity-player-control-bar.fade-in {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.unity-player-control-bar.fade-out {
+	opacity: 0;
+	transform: translateY(-100%);
+	pointer-events: none;
 }
 
 .unity-player-control-bar:hover {
@@ -35,6 +51,7 @@
 	top: 0;
 }
 
+/* Control Bar Layouts */
 .unity-player-control-bar .left-section {
 	display: flex;
 	align-items: center;
@@ -57,8 +74,7 @@
 	align-items: center;
 }
 
-
-
+/* Control Bar Content */
 .unity-player-control-bar .divider {
 	width: 2px;
 	height: 45px;
@@ -91,19 +107,30 @@
 	opacity: 0.5;
 }
 
+/* Toggle Button */
 .control-bar-toggle-button {
 	width: 12vw;
 	height: 35px;
 	background: #3498db;
 	border-bottom-left-radius: 50px;
 	border-bottom-right-radius: 50px;
-	position: relative;
+	position: absolute;
 	overflow: hidden;
 	background-color: #141821;
 	left: 44%;
-	position: absolute;
 	opacity: 0.2;
-	transition-duration: 0.6s;
+
+	transform: translateY(0);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Toggle Button Animations */
+.control-bar-toggle-button.visible {
+	transform: translateY(0);
+}
+
+.control-bar-toggle-button.hidden {
+	transform: translateY(-45px);
 }
 
 .control-bar-toggle-button:hover {
