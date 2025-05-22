@@ -58,11 +58,12 @@ export async function pingURL<T>({
 
 	if (body !== undefined) {
 		// If it's a POST request and a body is provided, stringify and include it
-		if (typeof body === "object") {
-			requestOptions.body = JSON.stringify(body);
-		} else {
-			requestOptions.body = String(body);
-		}
+		// if (typeof body === "object") {
+		// 	requestOptions.body = JSON.stringify(body);
+		// } else {
+		// 	requestOptions.body = String(body);
+		// }
+		requestOptions.body = body as BodyInit;
 	}
 
 	const res = await fetch(endpoint, requestOptions);
