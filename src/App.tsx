@@ -1,25 +1,21 @@
 import {
-	JSX,
 	useCallback,
-	useEffect,
+	useMemo,
 	useState
 } from "react";
-import "./App.css";
+
+// import "./App.css";
 
 import ControlBar from "./components/ControlBar";
 
 import UnityPlayer from "./components/UnityPlayer";
 
-import { DefaultUnityPlayerConfig } from "./types/UnityConfig";
+import UnityConfig, { DefaultUnityPlayerConfig } from "./types/UnityConfig";
+import { useParams } from "react-router-dom";
+import useAPI from "./hooks/useApi";
 
-interface WindowConfig {
+interface UnityProjectConfig {
 	buildUrl: string;
-}
-
-declare global {
-	interface Window {
-		UNITY_CONFIG: WindowConfig;
-	}
 }
 
 // UnityInstance interface to define the Unity instance methods
@@ -28,12 +24,21 @@ interface UnityInstance {
 }
 
 function App() {
+	let { project_id } = useParams();
+
+	const apiResponse = useAPI<UnityProjectConfig>({ endpoint: `unity-config/${project_id}`, method: "GET" });
+
+	const config = useMemo((): UnityConfig | null => {
+		if (apiResponse.status === "SUCCESS") {
+			return DefaultUnityPlayerConfig(apiResponse.data.buildUrl);
+		}
+
+		return null;
+	}, [apiResponse.status]);
+
 	// Auth state for application
 	const [auth, _setAuth] = useState(true);
-	const [player, setApp] = useState<JSX.Element | null>(
-		null
-	);
-	
+
 	// State for unity instance
 	const [unityInstance, setUnityInstance] =
 		useState<UnityInstance | null>(null);
@@ -45,66 +50,30 @@ function App() {
 		}
 	}, [unityInstance]);
 
-	useEffect(() => {
-		let config: WindowConfig | null = null;
+	if (!auth) return (<div>
+		You are not authorised to view this
+		content.
+	</div>);
 
-		try {
-			config = window.UNITY_CONFIG;
-			if (!config) {
-				throw ReferenceError(
-					"No config available."
-				);
-			}
-		} catch (e) {
-			console.error(
-				"Unable to get config from window. Error:\n",
-				e
-			);
-			return;
-		}
-
-		if (config == null) {
-			console.error(
-				"Unable to use null config for Unity Player."
-			);
-			return;
-		}
-
-		if (!config.buildUrl) {
-			console.error(
-				"Invalid Build URL. Unable to create the Unity Player."
-			);
-			return;
-		}
-
-		setApp(
-			<UnityPlayer
-				config={DefaultUnityPlayerConfig(
-					config.buildUrl
-				)}
-				setUnityInstance={setUnityInstance}
-			/>
-		);
-	}, []);
 
 	return (
 		<>
+			<ControlBar
+				makeFullScreen={makeFullScreen}
+			/>
 			<div className="unity-player-main">
-				<ControlBar
-					makeFullScreen={makeFullScreen}
-				/>
-
-				{auth ? (
-					player || (
-						<div>No player available.</div>
-					)
-				) : (
-					<div>
-						You are not authorised to view this
-						content.
-					</div>
-				)}
-			</div>
+				{
+					config !== null ?
+						<UnityPlayer
+							config={DefaultUnityPlayerConfig(
+								config.buildUrl
+							)}
+							setUnityInstance={setUnityInstance}
+						/>
+						:
+						(<div>No player available.</div>)
+				}
+			</div >
 		</>
 	);
 }

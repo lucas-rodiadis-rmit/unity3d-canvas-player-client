@@ -18,8 +18,15 @@ export default ({ mode }: { mode: string }) => {
 		}
 	}
 
+	const apiUrl = process.env.VITE_API_URL;
+	if (!apiUrl) {
+		throw Error(
+			`VITE_API_URL was not set from environment variables. This must be set in order to continue.`
+		);
+	}
+
 	return defineConfig({
-		base: baseUrl,
+		// base: baseUrl,
 		plugins: [react()]
 	});
 };
