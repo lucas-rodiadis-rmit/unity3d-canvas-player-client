@@ -12,7 +12,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 	const toggleVisible = () => setVisible(!visible);
 
 	return (
-		<>
+		<div className="control-bar-group">
 			{!visible && (
 				<div className="center-section">
 					<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
@@ -20,7 +20,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 			)}
 
 			{visible && (
-				<div>
+				<div className="control-bar-group">
 					<div className="unity-player-control-bar">
 						<div className="left-section">
 							<span>FPS: 30</span>
@@ -69,13 +69,12 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 								title="Close"
 								src={`/images/cross-icon.png`}
 							></img>
-							<div className="divider"></div>
 						</div>
 					</div>
 					<div className="control-bar-toggle-button" onClick={toggleVisible}></div>
 				</div>
 			)}
-		</>
+		</div>
 	);
 }
 
