@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./EmbedSelection.css";
 
 import useEmbedData from "../hooks/useEmbedData";
+import { useNavigate } from "react-router-dom";
 
 const EmbedSelection: React.FC = () => {
 	const [projects, setProjects] = useState([
@@ -13,18 +14,14 @@ const EmbedSelection: React.FC = () => {
 		useState(false);
 	const [showFPS, setShowFPS] = useState(false);
 
+	const navigate = useNavigate();
+
 	const handleAddProject = () => {
-		const name = prompt(
-			"Enter new Unity project name:"
-		);
-		if (name && !projects.includes(name)) {
-			setProjects([...projects, name]);
-			setSelected(name);
-		}
+		navigate("/upload");
 	};
 
-  // Function to submit embed data using hook
-  const { submitEmbedData } = useEmbedData();
+	// Function to submit embed data using hook
+	const { submitEmbedData } = useEmbedData();
 
 	return (
 		<div className="container">
