@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<Routes>
-				<Route path="/" element={<>hello </>} />
+				<Route path="/" element={<>Homepage -- there is nothing here yet.</>} />
 				<Route path="/register" element={<XMLGenerator />} />
 				<Route path="/unity-player/:project_id" element={<App />} />
 				<Route path="/embed" element={<EmbedSelection />} />
