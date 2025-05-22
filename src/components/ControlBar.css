@@ -1,3 +1,10 @@
+.control-bar-group {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 97vw;
+}
+
 .unity-player-control-bar {
 	display: flex;
 	align-items: center;
@@ -29,11 +36,18 @@
 }
 
 .unity-player-control-bar .left-section,
-.unity-player-control-bar .center-section,
 .unity-player-control-bar .right-section {
 	display: flex;
 	align-items: center;
-	gap: 16px;
+	gap: 12px;
+}
+
+.unity-player-control-bar .center-section {
+	position: absolute;
+	left: 48.5%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
 }
 
 .unity-player-control-bar .left-section {
@@ -44,7 +58,7 @@
 	height: 24px;
 	width: 1px;
 	background-color: #999;
-	margin: 0 12px;
+	margin: 0 3px;
 }
 
 .unity-player-control-bar .logo {
@@ -64,9 +78,21 @@
 }
 
 .unity-player-control-bar .icon:hover {
-	width: 25px;
-	height: 25px;
-	padding-left: 5;
+	transform: scale(1.2);
+	offset-position: 5px;
 	transition-duration: 0.3s;
 	opacity: 0.5;
+}
+
+.control-bar-toggle-button {
+	width: 12vw;
+	height: 40px;
+	background: #3498db;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	position: relative;
+	overflow: hidden;
+	background-color: red;
+	left: 44%;
+	position: absolute;
 }
