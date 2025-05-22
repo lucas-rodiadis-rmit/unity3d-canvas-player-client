@@ -62,10 +62,21 @@ function ProjectUploader() {
 			return;
 		}
 
-		console.debug("Sending payload to server: ", unityAppPayload);
 
+		const fd: FormData = new FormData();
 
-		await pingAPI<{}>({ endpoint: "unity-config/upload", method: "POST", body: unityAppPayload });
+		for (const [key, value] of Object.entries(unityAppPayload)) {
+			if (key === "files") continue;
+			fd.set(key, value);
+		}
+
+		for (let i = 0; i < unityAppPayload.files.length; i++) {
+			fd.append('files', unityAppPayload.files[i]);
+		}
+
+		console.debug("Sending payload to server: ", fd);
+
+		await pingAPI<{}>({ endpoint: "unity-config/upload", method: "POST", body: fd });
 	};
 
 	// Generic handler for all inputs/selects
