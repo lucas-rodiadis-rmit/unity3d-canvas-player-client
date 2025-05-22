@@ -81,7 +81,7 @@ const EmbedSelection: React.FC = () => {
 
 			<button
 				className="button-submit"
-				onClick={() => handleSubmit}
+				onClick={() => submitEmbedData(true)}
 			>
 				Add
 			</button>
