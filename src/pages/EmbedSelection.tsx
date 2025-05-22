@@ -25,9 +25,6 @@ const EmbedSelection: React.FC = () => {
 
   // Function to submit embed data using hook
   const { submitEmbedData } = useEmbedData();
-	const handleSubmit = () => {
-      submitEmbedData(true);
-	};
 
 	return (
 		<div className="container">
