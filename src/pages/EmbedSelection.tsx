@@ -3,6 +3,7 @@ import "./EmbedSelection.css";
 
 import useEmbedData from "../hooks/useEmbedData";
 import { useNavigate } from "react-router-dom";
+import { config } from "../config/config.ts";
 
 const EmbedSelection: React.FC = () => {
 	const [projects, setProjects] = useState([
@@ -15,7 +16,7 @@ const EmbedSelection: React.FC = () => {
 		const fetchProjects = async () => {
 			try {
 				const response = await fetch(
-					window.location.origin + "/api/v1/unity-app/"
+					config.DOMAIN_URL + "api/v1/unity-config/"
 				);
 				if (!response.ok) {
 					throw new Error("Network response was not ok");
