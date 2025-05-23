@@ -1,45 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./EmbedSelection.css";
 
-import useEmbedData from "../hooks/useEmbedData";
 import { useNavigate } from "react-router-dom";
-import { config } from "../config/config.ts";
+import useAPI from "../hooks/useApi.ts";
+import useEmbedData from "../hooks/useEmbedData";
+
+// Based on server config
+export interface UnityAppConfig {
+	id: string;
+
+	buildUrl: string;
+}
 
 const EmbedSelection: React.FC = () => {
-	const [projects, setProjects] = useState([
-		"Clinic Sim",
-		"Other"
-	]);
-
-	// Make call to API to get list of projects
-	useEffect(() => {
-		const fetchProjects = async () => {
-			try {
-				const response = await fetch(
-					config.DOMAIN_URL + "api/v1/unity-config/"
-				);
-				if (!response.ok) {
-					throw new Error("Network response was not ok");
-				}
-				const data = await response.json();
-				setProjects(data);
-			} catch (error) {
-				console.error("Error fetching projects:", error);
-			}
-		};
-
-		fetchProjects();
-	}, []);
-
-	const [selected, setSelected] = useState(projects[0]);
+	const [selected, setSelected] = useState<string | null>(
+		null
+	);
 	const [allowFullscreen, setAllowFullscreen] =
 		useState(false);
 	const [showFPS, setShowFPS] = useState(false);
-	
-	const navigate = useNavigate()
+
+	const navigate = useNavigate();
 	const handleAddProject = () => {
 		navigate("/upload");
 	};
+
+	const configs = useAPI<UnityAppConfig[]>({
+		method: "GET",
+		endpoint: "unity-config/"
+	});
 
 	// Function to submit embed data using hook
 	const { submitEmbedData } = useEmbedData();
@@ -52,16 +41,26 @@ const EmbedSelection: React.FC = () => {
 
 			<div className="select-container">
 				<select
-					value={selected}
+					value={selected || undefined}
 					onChange={(e) =>
 						setSelected(e.target.value)
 					}
 				>
-					{projects.map((p) => (
-						<option key={p} value={p}>
-							{p}
-						</option>
-					))}
+					{configs.status === "LOADING" ? (
+						<p>
+							Loading projects. Please wait...
+						</p>
+					) : configs.status === "ERROR" ? (
+						<p>An unknown error has occured</p>
+					) : configs.status === "SUCCESS" ? (
+						configs.data.map((p) => (
+							<option key={p.id} value={p.id}>
+								{p.id}
+							</option>
+						))
+					) : (
+						<></>
+					)}
 				</select>
 				<button
 					className="plus-button"
