@@ -1,20 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./EmbedSelection.css";
 
 import useEmbedData from "../hooks/useEmbedData";
 import { useNavigate } from "react-router-dom";
 
 const EmbedSelection: React.FC = () => {
-	// TODO: This needs to be replaced with a call to the API
-	// const [projects, setProjects] = useState([
-	// 	"Clinic Sim",
-	// 	"Other"
-	// ]);
-	const projects = [
+	const [projects, setProjects] = useState([
 		"Clinic Sim",
 		"Other"
-	];
-	
+	]);
+
+	// Make call to API to get list of projects
+	useEffect(() => {
+		const fetchProjects = async () => {
+			try {
+				const response = await fetch(
+					window.location.origin + "/api/v1/unity-app/"
+				);
+				if (!response.ok) {
+					throw new Error("Network response was not ok");
+				}
+				const data = await response.json();
+				setProjects(data);
+			} catch (error) {
+				console.error("Error fetching projects:", error);
+			}
+		};
+
+		fetchProjects();
+	}, []);
+
 	const [selected, setSelected] = useState(projects[0]);
 	const [allowFullscreen, setAllowFullscreen] =
 		useState(false);
@@ -25,8 +40,8 @@ const EmbedSelection: React.FC = () => {
 		navigate("/upload");
 	};
 
-  // Function to submit embed data using hook
-  const { submitEmbedData } = useEmbedData();
+	// Function to submit embed data using hook
+	const { submitEmbedData } = useEmbedData();
 
 	return (
 		<div className="container">
