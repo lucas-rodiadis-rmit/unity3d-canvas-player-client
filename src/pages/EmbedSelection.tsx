@@ -8,6 +8,7 @@ import useEmbedData from "../hooks/useEmbedData";
 // Based on server config
 export interface UnityAppConfig {
 	id: string;
+	name: string;
 
 	buildUrl: string;
 }
@@ -55,7 +56,7 @@ const EmbedSelection: React.FC = () => {
 					) : configs.status === "SUCCESS" ? (
 						configs.data.map((p) => (
 							<option key={p.id} value={p.id}>
-								{p.id}
+								{p.name}
 							</option>
 						))
 					) : (
