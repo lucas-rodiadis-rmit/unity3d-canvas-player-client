@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { UnityAppConfig } from "@api/types";
 
 const EmbedSelection: React.FC = () => {
-	const [selected, setSelected] = useState<string | null>(
-		null
+	const [selected, setSelected] = useState<UnityAppConfig | undefined>(
 	);
 	const [allowFullscreen, setAllowFullscreen] =
 		useState(false);
@@ -37,9 +36,13 @@ const EmbedSelection: React.FC = () => {
 
 			<div className="select-container">
 				<select
-					value={selected || undefined}
-					onChange={(e) =>
-						setSelected(e.target.value)
+					value={selected?.id}
+					onChange={(e) => {
+
+						if (configs.status !== "SUCCESS") return;
+
+						setSelected(configs.data.find(config => config.id === e.target.value));
+					}
 					}
 				>
 					{configs.status === "LOADING" ? (
@@ -91,7 +94,15 @@ const EmbedSelection: React.FC = () => {
 
 			<button
 				className="button-submit"
-				onClick={() => submitEmbedData(true)}
+
+				onClick={() => {
+					if (!selected) {
+						alert("No config selected to submit.");
+						return;
+					}
+
+					submitEmbedData(selected, true)
+				}}
 			>
 				Add
 			</button>

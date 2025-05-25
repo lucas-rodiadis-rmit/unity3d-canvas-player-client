@@ -1,3 +1,6 @@
+import { UnityAppConfig } from "@api/types";
+import { config } from "../config/config";
+
 /**
  * This function is used to hide and submit embedding data for Unity3D Player in Canvas LMS.
  */
@@ -41,7 +44,10 @@ function submitLTIForm({
  * Hook to handle embedding data for Unity3D Player in Canvas LMS
  */
 function useEmbedData() {
-	const submitEmbedData = (useIFrame: boolean) => {
+	const submitEmbedData = (
+		appConfig: UnityAppConfig,
+		useIFrame: boolean
+	) => {
 		if (
 			!window.LOCAL_DATA.token ||
 			!window.LOCAL_DATA.returnUrl
@@ -52,7 +58,7 @@ function useEmbedData() {
 			return;
 		}
 
-		const embedUrl = `https://canvasunityplayer.hudini.online/unity-player/test123456`;
+		const embedUrl = `${config.DOMAIN_URL}unity-player/${appConfig.id}`;
 
 		const contentItems = {
 			"@context":
