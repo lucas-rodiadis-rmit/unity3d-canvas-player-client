@@ -42,12 +42,12 @@ interface UseAPIProps<T> {
 	body?: T | string;
 }
 
-export async function pingURL<T>({
+export async function pingURL<T, R = {}>({
 	method = "GET",
 	endpoint,
 	headers,
 	body
-}: UseAPIProps<T>): Promise<T> {
+}: UseAPIProps<T>): Promise<R> {
 	const requestOptions: RequestInit = {
 		method: method,
 		headers: {
@@ -57,19 +57,24 @@ export async function pingURL<T>({
 	};
 
 	if (body !== undefined) {
+		if (body instanceof FormData) {
+			requestOptions.body = body;
+		} else {
+			requestOptions.body = JSON.stringify(body);
+		}
+
 		// If it's a POST request and a body is provided, stringify and include it
 		// if (typeof body === "object") {
 		// 	requestOptions.body = JSON.stringify(body);
 		// } else {
 		// 	requestOptions.body = String(body);
 		// }
-		requestOptions.body = body as BodyInit;
 	}
 
 	const res = await fetch(endpoint, requestOptions);
 
 	if (res.ok) {
-		const data: T = await res.json();
+		const data: R = await res.json();
 
 		console.debug("Received data: ", data);
 
@@ -81,10 +86,10 @@ export async function pingURL<T>({
 	}
 }
 
-export async function pingAPI<T>(
+export async function pingAPI<T, R = {}>(
 	props: UseAPIProps<T>
-): Promise<Awaited<T>> {
-	return await pingURL({
+): Promise<Awaited<R>> {
+	return await pingURL<T, R>({
 		...props,
 		endpoint: `${API_URL}/${props.endpoint}`
 	});
@@ -100,7 +105,7 @@ function useAPI<T>(props: UseAPIProps<T>): APIResponse<T> {
 	useEffect(() => {
 		const URL = `${API_URL}/${props.endpoint}`;
 
-		pingURL({
+		pingURL<T>({
 			method: props.method,
 			body: props.body,
 			endpoint: URL

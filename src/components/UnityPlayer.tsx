@@ -41,9 +41,8 @@ function UnityPlayer({
 		if (!canvasRef.current) return;
 
 		const runLoader = async () => {
-			const loaderUrl: string = (
-				config.buildUrl + "/buildweb.loader.js"
-			);
+			const loaderUrl: string =
+				config.buildUrl + "/buildweb.loader.js";
 			console.log(
 				`Using Unity loader from ${loaderUrl}`
 			);
@@ -65,7 +64,7 @@ function UnityPlayer({
 					await createUnityInstance(
 						canvasRef.current,
 						{ ...config },
-						() => { }
+						() => {}
 					).then((unityInstance: any) => {
 						setUnityInstance(unityInstance);
 					});

@@ -5,13 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useAPI from "../hooks/useApi.ts";
 import useEmbedData from "../hooks/useEmbedData";
 
-// Based on server config
-export interface UnityAppConfig {
-	id: string;
-	name: string;
-
-	buildUrl: string;
-}
+import { UnityAppConfig } from "@api/types";
 
 const EmbedSelection: React.FC = () => {
 	const [selected, setSelected] = useState<string | null>(

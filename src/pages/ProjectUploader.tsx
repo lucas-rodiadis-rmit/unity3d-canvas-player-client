@@ -1,6 +1,11 @@
 import { JSX, useMemo, useState } from "react";
-import "./ProjectUploader.css";
 import { pingAPI } from "../hooks/useApi";
+import "./ProjectUploader.css";
+
+import {
+	CreateUnityAppPayload,
+	UnityAppConfig
+} from "@api/types";
 
 declare module "react" {
 	interface InputHTMLAttributes<T>
@@ -9,29 +14,10 @@ declare module "react" {
 	}
 }
 
-interface CreateUnityAppPayload {
-	name: string;
-
-	// Extents options
-	embedWidth?: number;
-	embedHeight?: number;
-
-	// Control options
-	allowResizing: boolean;
-	allowFullscreen: boolean;
-	allowReloading: boolean;
-
-	files: FileList | null;
-
-	// Analytic options
-	showFPS: boolean;
-}
-
 function ProjectUploader() {
 	const [unityAppPayload, setUnityAppPayload] =
 		useState<CreateUnityAppPayload>({
 			name: "",
-			files: null,
 
 			allowFullscreen: false,
 			allowReloading: false,
@@ -39,12 +25,13 @@ function ProjectUploader() {
 			showFPS: false
 		});
 
+	const [files, setFiles] = useState<FileList | null>(
+		null
+	);
+
 	const handleUploadClick = async () => {
 		// Show alerts if anything is missing or invalid
-		if (
-			!unityAppPayload.files ||
-			!unityAppPayload.files.length
-		) {
+		if (!files || !files.length) {
 			alert("Please select a file.");
 			return;
 		} else if (!unityAppPayload.name.trim()) {
@@ -62,21 +49,46 @@ function ProjectUploader() {
 			return;
 		}
 
+		const appConfig = await pingAPI<
+			CreateUnityAppPayload,
+			UnityAppConfig
+		>({
+			endpoint: "unity-config",
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: unityAppPayload
+		});
 
-		const fd: FormData = new FormData();
-
-		for (const [key, value] of Object.entries(unityAppPayload)) {
-			if (key === "files") continue;
-			fd.set(key, value);
+		if (!appConfig) {
+			alert("Unable to create Unity app.");
+			return;
 		}
 
-		for (let i = 0; i < unityAppPayload.files.length; i++) {
-			fd.append('files', unityAppPayload.files[i]);
+		const fd: FormData = new FormData();
+		fd.append("projectId", appConfig.id);
+
+		for (let i = 0; i < files.length; i++) {
+			fd.append(
+				"files",
+				files[i],
+				files[i].webkitRelativePath
+			);
 		}
 
 		console.debug("Sending payload to server: ", fd);
 
-		await pingAPI<{}>({ endpoint: "unity-config/upload", method: "POST", body: fd });
+		const data = await pingAPI<
+			FormData,
+			UnityAppConfig
+		>({
+			endpoint: "unity-config/upload",
+			method: "POST",
+			body: fd
+		});
+
+		alert(
+			`Successfully uploaded ${data.name}. You should be able to embed it now.`
+		);
 	};
 
 	// Generic handler for all inputs/selects
@@ -88,10 +100,7 @@ function ProjectUploader() {
 			e.target as HTMLInputElement;
 
 		if (type === "file") {
-			setUnityAppPayload((prev) => ({
-				...prev,
-				files
-			}));
+			setFiles(files);
 			return;
 		} else if (e.target.type === "checkbox") {
 			setUnityAppPayload((prev) => ({
@@ -113,14 +122,16 @@ function ProjectUploader() {
 
 	const elements: Array<JSX.Element> = useMemo(() => {
 		const elements = [];
-		if (unityAppPayload.files) {
-			for (let i = 0; i < unityAppPayload.files.length; i++) {
-				elements.push(<p>{unityAppPayload.files[i].webkitRelativePath}</p>);
+		if (files) {
+			for (let i = 0; i < files.length; i++) {
+				elements.push(
+					<p>{files[i].webkitRelativePath}</p>
+				);
 			}
 		}
 
 		return elements;
-	}, [unityAppPayload.files]);
+	}, [files]);
 
 	return (
 		<div className="project-uploader">
@@ -129,8 +140,14 @@ function ProjectUploader() {
 			<div className="input-group">
 				<h3>Path:</h3>
 
-				<div id="filepath-previewer" >
-					<h3 style={{ backgroundColor: elements.length ? "green" : "red" }} >{`${elements.length} files`}</h3>
+				<div id="filepath-previewer">
+					<h3
+						style={{
+							backgroundColor: elements.length
+								? "green"
+								: "red"
+						}}
+					>{`${elements.length} files`}</h3>
 					<div id="filepath-previewer-elements">
 						{...elements}
 					</div>

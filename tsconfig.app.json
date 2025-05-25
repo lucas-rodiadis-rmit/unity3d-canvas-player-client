@@ -20,7 +20,11 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUncheckedSideEffectImports": true
+		"noUncheckedSideEffectImports": true,
+		// Import the types from the backend
+		"paths": {
+      		"@api/*": ["../server/src/shared/*"]
+    	}
 	},
 	"include": ["src", "src/.d.ts"]
 }
