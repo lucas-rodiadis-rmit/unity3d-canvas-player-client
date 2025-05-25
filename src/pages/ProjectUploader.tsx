@@ -29,6 +29,9 @@ function ProjectUploader() {
 		null
 	);
 
+	const [uploading, setUploading] = useState<boolean>(false);
+
+
 	const handleUploadClick = async () => {
 		// Show alerts if anything is missing or invalid
 		if (!files || !files.length) {
@@ -64,6 +67,10 @@ function ProjectUploader() {
 			return;
 		}
 
+
+		console.log("Uploading...");
+		setUploading(true);
+
 		const fd: FormData = new FormData();
 		fd.append("projectId", appConfig.id);
 
@@ -77,18 +84,29 @@ function ProjectUploader() {
 
 		console.debug("Sending payload to server: ", fd);
 
-		const data = await pingAPI<
-			FormData,
-			UnityAppConfig
-		>({
-			endpoint: "unity-config/upload",
-			method: "POST",
-			body: fd
-		});
+		try {
+			const data = await pingAPI<
+				FormData,
+				UnityAppConfig
+			>({
+				endpoint: "unity-config/upload",
+				method: "POST",
+				body: fd
+			});
 
-		alert(
-			`Successfully uploaded ${data.name}. You should be able to embed it now.`
-		);
+			alert(
+				`Successfully uploaded ${data.name}. You should be able to embed it now.`
+			);
+
+		}
+
+		catch (error) {
+			console.error(error);
+		}
+		finally {
+			setUploading(false);
+		}
+
 	};
 
 	// Generic handler for all inputs/selects
@@ -246,8 +264,8 @@ function ProjectUploader() {
 				</label>
 			</div>
 
-			<button onClick={handleUploadClick}>
-				Upload
+			<button onClick={handleUploadClick} disabled={uploading}>
+				{uploading ? "Uploading. Please wait..." : "Upload"}
 			</button>
 		</div>
 	);
