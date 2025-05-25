@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./EmbedSelection.css";
 
-import { useNavigate } from "react-router-dom";
 import useAPI from "../hooks/useApi.ts";
 import useEmbedData from "../hooks/useEmbedData";
 import { useNavigate } from "react-router-dom";
