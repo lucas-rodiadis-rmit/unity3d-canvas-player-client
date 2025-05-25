@@ -4,6 +4,7 @@ import "./EmbedSelection.css";
 import { useNavigate } from "react-router-dom";
 import useAPI from "../hooks/useApi.ts";
 import useEmbedData from "../hooks/useEmbedData";
+import { useNavigate } from "react-router-dom";
 
 import { UnityAppConfig } from "@api/types";
 
@@ -16,6 +17,7 @@ const EmbedSelection: React.FC = () => {
 	const [showFPS, setShowFPS] = useState(false);
 
 	const navigate = useNavigate();
+
 	const handleAddProject = () => {
 		navigate("/upload");
 	};

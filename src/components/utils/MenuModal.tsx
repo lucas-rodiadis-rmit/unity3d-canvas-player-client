@@ -27,12 +27,10 @@ const MenuModal: React.FC<MenuModalProps> = ({
 						Resizing
 					</h3>
 					<div className="modal-buttons">
-						<button
-							onClick={() => {
-								onResize(400);
-								onClose();
-							}}
-						>
+						<button onClick={() => { onResize(200); onClose(); }}>
+							Height: 200px
+						</button>
+						<button onClick={() => { onResize(400); onClose(); }}>
 							Height: 400px
 						</button>
 						<button
@@ -43,6 +41,9 @@ const MenuModal: React.FC<MenuModalProps> = ({
 						>
 							Height: 600px
 						</button>
+						<button onClick={() => { onResize(800); onClose(); }}>
+							Height: 800px
+						</button>
 					</div>
 				</section>
 
@@ -52,12 +53,7 @@ const MenuModal: React.FC<MenuModalProps> = ({
 						Other Options
 					</h3>
 					<div className="modal-buttons">
-						<button
-							onClick={() => {
-								onResize(800);
-								onClose();
-							}}
-						>
+						<button onClick={() => { onClose(); }}>
 							Other Option
 						</button>
 					</div>
