@@ -153,3 +153,10 @@ body {
 #filepath-previewer > h3 {
 	text-align: center;
 }
+
+#upload-box {
+	display: flex;
+	justify-content: space-between;
+	color: white;
+	background-color: grey;
+}

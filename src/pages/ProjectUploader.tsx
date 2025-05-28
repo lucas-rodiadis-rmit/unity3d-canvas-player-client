@@ -6,6 +6,8 @@ import {
 	CreateUnityAppPayload,
 	UnityAppConfig
 } from "@api/types";
+import useUploader from "../hooks/useUploader";
+import { API_URL } from "../constants";
 
 declare module "react" {
 	interface InputHTMLAttributes<T>
@@ -29,8 +31,7 @@ function ProjectUploader() {
 		null
 	);
 
-	const [uploading, setUploading] = useState<boolean>(false);
-
+	const [upload, uploadState] = useUploader();
 
 	const handleUploadClick = async () => {
 		// Show alerts if anything is missing or invalid
@@ -69,21 +70,10 @@ function ProjectUploader() {
 
 
 		console.log("Uploading...");
-		setUploading(true);
 
-		const fd: FormData = new FormData();
-		fd.append("projectId", appConfig.id);
+		upload(API_URL + "unity-config", files);
 
-		for (let i = 0; i < files.length; i++) {
-			fd.append(
-				"files",
-				files[i],
-				files[i].webkitRelativePath
-			);
-		}
-
-		console.debug("Sending payload to server: ", fd);
-
+		/*
 		try {
 			const data = await pingAPI<
 				FormData,
@@ -106,7 +96,7 @@ function ProjectUploader() {
 		finally {
 			setUploading(false);
 		}
-
+		*/
 	};
 
 	// Generic handler for all inputs/selects
@@ -264,9 +254,19 @@ function ProjectUploader() {
 				</label>
 			</div>
 
-			<button onClick={handleUploadClick} disabled={uploading}>
-				{uploading ? "Uploading. Please wait..." : "Upload"}
+			<button onClick={handleUploadClick} disabled={uploadState.status === "UPLOADING"}>
+				Upload
 			</button>
+
+			{
+				uploadState.status === "UPLOADING" ?
+					(
+						<div id="upload-box">
+							<span>{`Uploading File (${uploadState.currentFileIndex}/${uploadState.fileCount})`}</span>
+							<span>{`${uploadState.currentFileName} (${uploadState.currentChunkIndex}/${uploadState.chunkCount})`}</span>
+						</div>
+					)
+					: <></>}
 		</div>
 	);
 }
