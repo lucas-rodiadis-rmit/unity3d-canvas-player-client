@@ -35,19 +35,19 @@ const DEFAULT_API_RESPONSE: APILoading = {
 	status: "LOADING"
 } as const;
 
-interface UseAPIProps<T> {
+interface UseAPIProps {
 	method: "GET" | "POST" | "DELETE";
 	headers?: HeadersInit;
 	endpoint: string;
-	body?: T | string;
+	body?: object | string | FormData;
 }
 
-export async function pingURL<T, R = {}>({
+export async function pingURL<R = {}>({
 	method = "GET",
 	endpoint,
 	headers,
 	body
-}: UseAPIProps<T>): Promise<R> {
+}: UseAPIProps): Promise<R> {
 	const requestOptions: RequestInit = {
 		method: method,
 		headers: {
@@ -59,8 +59,12 @@ export async function pingURL<T, R = {}>({
 	if (body !== undefined) {
 		if (body instanceof FormData) {
 			requestOptions.body = body;
-		} else {
+		} else if (typeof body === "object") {
 			requestOptions.body = JSON.stringify(body);
+			requestOptions.headers = {
+				...requestOptions.headers,
+				"Content-Type": "application/json"
+			};
 		}
 
 		// If it's a POST request and a body is provided, stringify and include it
@@ -86,18 +90,18 @@ export async function pingURL<T, R = {}>({
 	}
 }
 
-export async function pingAPI<T, R = {}>(
-	props: UseAPIProps<T>
+export async function pingAPI<R = {}>(
+	props: UseAPIProps
 ): Promise<Awaited<R>> {
-	return await pingURL<T, R>({
+	return await pingURL<R>({
 		...props,
 		endpoint: `${API_URL}/${props.endpoint}`
 	});
 }
 
-function useAPI<T>(props: UseAPIProps<T>): APIResponse<T> {
+function useAPI<R>(props: UseAPIProps): APIResponse<R> {
 	const [response, setResponse] = useState<
-		APIResponse<T>
+		APIResponse<R>
 	>({
 		...DEFAULT_API_RESPONSE
 	});
@@ -105,7 +109,7 @@ function useAPI<T>(props: UseAPIProps<T>): APIResponse<T> {
 	useEffect(() => {
 		const URL = `${API_URL}/${props.endpoint}`;
 
-		pingURL<T>({
+		pingURL<R>({
 			method: props.method,
 			body: props.body,
 			endpoint: URL
@@ -117,7 +121,7 @@ function useAPI<T>(props: UseAPIProps<T>): APIResponse<T> {
 				);
 				setResponse({
 					status: "SUCCESS",
-					data: data as T
+					data: data as R
 				});
 			})
 			.catch((error) => {

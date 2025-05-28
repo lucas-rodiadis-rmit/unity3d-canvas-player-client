@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from "react";
+import { pingURL } from "./useApi";
 
 const CHUNK_SIZE = 8 * 1024 * 1024; // 8MB chunk size
 
@@ -50,6 +51,15 @@ function useUploader(): [UploadFunction, UploaderStatus] {
 						chunkIndex: 0,
 						chunkCount: getChunkCount(nextFile),
 						fileIndex: prev.fileIndex + 1
+					};
+				} else if (action.type === "ERROR") {
+					if (prev.onUpload) {
+						prev.onUpload(false);
+					}
+
+					return {
+						status: "ERROR",
+						message: `Unable to upload file ${prev.files.item(prev.fileIndex)}`
 					};
 				}
 			}
@@ -109,12 +119,11 @@ function useUploader(): [UploadFunction, UploaderStatus] {
 		const chunk = file.slice(start, end);
 
 		fd.append("chunk", chunk);
+		fd.append(
+			"offset",
+			String(state.chunkIndex * CHUNK_SIZE)
+		);
 
-		setTimeout(() => {
-			dispatch({ type: "NEXT_CHUNK" });
-		}, 50);
-
-		/*
 		pingURL({
 			method: "POST",
 			endpoint: state.url,
@@ -124,9 +133,11 @@ function useUploader(): [UploadFunction, UploaderStatus] {
 				dispatch({ type: "NEXT_CHUNK" });
 			})
 			.catch((err) => {
-				throw Error("Error uploading chunk:" + err);
+				dispatch({
+					type: "ERROR",
+					message: (err as Error).message
+				});
 			});
-			*/
 	}, [{ ...state }]);
 
 	switch (state.status) {
@@ -162,6 +173,12 @@ function useUploader(): [UploadFunction, UploaderStatus] {
 		}
 		case "SUCCESS": {
 			return [startUploading, { status: "IDLE" }];
+		}
+		case "ERROR": {
+			return [
+				startUploading,
+				{ status: "ERROR", message: state.message }
+			];
 		}
 		default: {
 			return [
@@ -224,6 +241,11 @@ interface StateIdle extends StateBase {
 	status: "IDLE" | "SUCCESS";
 }
 
+interface StateError extends StateBase {
+	status: "ERROR";
+	message: string;
+}
+
 interface StateUploading extends StateBase {
 	status: "UPLOADING";
 
@@ -238,7 +260,7 @@ interface StateUploading extends StateBase {
 }
 
 interface ActionBase {
-	type: "UPLOAD" | "NEXT_CHUNK";
+	type: "UPLOAD" | "NEXT_CHUNK" | "ERROR";
 }
 
 interface ActionUpload extends ActionBase {
@@ -252,5 +274,10 @@ interface ActionNextChunk extends ActionBase {
 	type: "NEXT_CHUNK";
 }
 
-type State = StateUploading | StateIdle;
-type Action = ActionUpload | ActionNextChunk;
+interface ActionError extends ActionBase {
+	type: "ERROR";
+	message: string;
+}
+
+type State = StateUploading | StateIdle | StateError;
+type Action = ActionUpload | ActionNextChunk | ActionError;

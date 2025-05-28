@@ -2,10 +2,12 @@ import { JSX, useMemo, useState } from "react";
 import "./ProjectUploader.css";
 
 import {
-	CreateUnityAppPayload
+	CreateUnityAppPayload,
+	UnityAppConfig
 } from "@api/types";
 import useUploader from "../hooks/useUploader";
 import { API_URL } from "../constants";
+import { pingAPI } from "../hooks/useApi";
 
 declare module "react" {
 	interface InputHTMLAttributes<T>
@@ -53,32 +55,33 @@ function ProjectUploader() {
 
 		console.log("Uploading files:", files);
 
-		upload(API_URL + "unity-config", files);
-
-		/*
 		try {
 			const data = await pingAPI<
-				FormData,
 				UnityAppConfig
 			>({
-				endpoint: "unity-config/upload",
+				endpoint: "unity-config",
 				method: "POST",
-				body: fd
+				body: unityAppPayload
 			});
 
-			alert(
-				`Successfully uploaded ${data.name}. You should be able to embed it now.`
-			);
+			console.debug(data);
 
+			upload(`${API_URL}/unity-config/${data.id}/upload`, files, (success) => {
+				if (success) {
+					alert(
+						`Successfully uploaded ${data.name}. You should be able to embed it now.`
+					);
+				}
+				else {
+					alert(
+						`Errors occurred while uploading ${data.name}. Please try deleting it from the server and uploading it again.`
+					);
+				}
+			});
 		}
-
 		catch (error) {
-			console.error(error);
+			console.error("An error occurred while uploading the app: ", error);
 		}
-		finally {
-			setUploading(false);
-		}
-		*/
 	};
 
 	// Generic handler for all inputs/selects
