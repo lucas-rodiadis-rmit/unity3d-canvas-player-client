@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { pingURL } from "./useApi";
 
-const CHUNK_SIZE = 8 * 1024 * 1024; // 8MB chunk size
+const CHUNK_SIZE = (1 * 1024 * 1024) / 2; // 512kb chunk size (nginx default is 1mb apparently)
 
 function getChunkCount(file: File): number {
 	return Math.ceil(file.size / CHUNK_SIZE);
