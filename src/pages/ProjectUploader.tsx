@@ -1,10 +1,8 @@
 import { JSX, useMemo, useState } from "react";
-import { pingAPI } from "../hooks/useApi";
 import "./ProjectUploader.css";
 
 import {
-	CreateUnityAppPayload,
-	UnityAppConfig
+	CreateUnityAppPayload
 } from "@api/types";
 import useUploader from "../hooks/useUploader";
 import { API_URL } from "../constants";
@@ -53,23 +51,7 @@ function ProjectUploader() {
 			return;
 		}
 
-		const appConfig = await pingAPI<
-			CreateUnityAppPayload,
-			UnityAppConfig
-		>({
-			endpoint: "unity-config",
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: unityAppPayload
-		});
-
-		if (!appConfig) {
-			alert("Unable to create Unity app.");
-			return;
-		}
-
-
-		console.log("Uploading...");
+		console.log("Uploading files:", files);
 
 		upload(API_URL + "unity-config", files);
 
@@ -262,8 +244,8 @@ function ProjectUploader() {
 				uploadState.status === "UPLOADING" ?
 					(
 						<div id="upload-box">
-							<span>{`Uploading File (${uploadState.currentFileIndex}/${uploadState.fileCount})`}</span>
-							<span>{`${uploadState.currentFileName} (${uploadState.currentChunkIndex}/${uploadState.chunkCount})`}</span>
+							<span>{`Uploading File (${uploadState.currentFileIndex + 1}/${uploadState.fileCount})`}</span>
+							<span>{`${uploadState.currentFileName} (${uploadState.currentChunkIndex + 1}/${uploadState.chunkCount})`}</span>
 						</div>
 					)
 					: <></>}
