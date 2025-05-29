@@ -1,8 +1,15 @@
-// LoadingBar.tsx
+import "./LoadingBar.css"
+
 interface LoadingBarProps {
   progress: number;
 }
 
+/**
+ * 
+ * @param param0 - The props for the LoadingBar component.
+ * @param param0.progress - The loading progress as a number between 0 and 1.
+ * @returns 
+ */
 const LoadingBar: React.FC<LoadingBarProps> = ({ progress }) => {
   return (
     <div className="loading-bar-wrapper">
