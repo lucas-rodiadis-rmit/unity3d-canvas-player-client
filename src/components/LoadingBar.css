@@ -1,0 +1,21 @@
+/* Example loading bar styling */
+.loading-container {
+	width: 100%;
+	text-align: center;
+	padding: 1rem;
+}
+
+.loading-bar {
+	width: 80%;
+	height: 10px;
+	background-color: #ddd;
+	margin: 0 auto;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.loading-bar-fill {
+	height: 100%;
+	background-color: #4caf50;
+	transition: width 0.3s ease-in-out;
+}

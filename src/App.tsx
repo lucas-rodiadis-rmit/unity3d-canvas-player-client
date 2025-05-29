@@ -12,6 +12,7 @@ import UnityConfig, {
 	DefaultUnityPlayerConfig
 } from "./types/UnityConfig";
 
+import LoadingBar from "./components/LoadingBar";
 import { useUnityInstance } from "./hooks/useUnityInstance";
 
 interface UnityProjectConfig {
@@ -40,8 +41,13 @@ function App() {
 	const [auth, _setAuth] = useState(true);
 
 	// Unity instance methods and state
-	const { setUnityInstance, makeFullScreen } =
-		useUnityInstance();
+	const {
+		setUnityInstance,
+		makeFullScreen,
+		isLoading,
+		loadingProgress,
+		handleProgress
+	} = useUnityInstance();
 
 	if (!auth)
 		return (
@@ -54,12 +60,17 @@ function App() {
 		<>
 			<ControlBar makeFullScreen={makeFullScreen} />
 			<div className="unity-player-main">
-				{config !== null ? (
+				{isLoading ? (
+					<LoadingBar
+						progress={loadingProgress}
+					/>
+				) : config !== null ? (
 					<UnityPlayer
 						config={DefaultUnityPlayerConfig(
 							config.buildUrl
 						)}
 						setUnityInstance={setUnityInstance}
+						onProgress={handleProgress}
 					/>
 				) : (
 					<div>No player available.</div>
