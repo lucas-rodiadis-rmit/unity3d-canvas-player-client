@@ -10,9 +10,6 @@ import { UnityAppConfig } from "@api/types";
 const EmbedSelection: React.FC = () => {
 	const [selected, setSelected] = useState<UnityAppConfig | undefined>(
 	);
-	const [allowFullscreen, setAllowFullscreen] =
-		useState(false);
-	const [showFPS, setShowFPS] = useState(false);
 
 	const navigate = useNavigate();
 
