@@ -60,11 +60,7 @@ function App() {
 		<>
 			<ControlBar makeFullScreen={makeFullScreen} />
 			<div className="unity-player-main">
-				{isLoading ? (
-					<LoadingBar
-						progress={loadingProgress}
-					/>
-				) : config !== null ? (
+				{config !== null ? (
 					<UnityPlayer
 						config={DefaultUnityPlayerConfig(
 							config.buildUrl
@@ -74,6 +70,14 @@ function App() {
 					/>
 				) : (
 					<div>No player available.</div>
+				)}
+
+				{isLoading && (
+					<div className="loading-overlay">
+						<LoadingBar
+							progress={loadingProgress}
+						/>
+					</div>
 				)}
 			</div>
 		</>

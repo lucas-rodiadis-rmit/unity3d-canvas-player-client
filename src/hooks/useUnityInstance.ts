@@ -14,7 +14,7 @@ export const useUnityInstance = () => {
     // Function to handle progress updates from the Unity instance
 	const handleProgress = (progress: number) => {
 		setLoadingProgress(progress);
-		if (progress >= 1) {
+		if (progress >= 0.95) {
 			setTimeout(() => setIsLoading(false), 300); // smooth fadeout
 		}
 	};
