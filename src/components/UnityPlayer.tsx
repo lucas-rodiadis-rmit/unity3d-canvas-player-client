@@ -4,6 +4,7 @@ import "./UnityPlayer.css";
 
 import useCurrentSize from "../hooks/useCurrentSize";
 import UnityConfig from "../types/UnityConfig";
+import type { UnityInstance } from "../types/UnityInstance";
 
 export const defaultBuildUrl: string = "/ClinicSim/Build";
 export const defaultLoaderUrl: string =
@@ -12,13 +13,14 @@ export const defaultLoaderUrl: string =
 interface UnityPlayerProps {
 	config: UnityConfig;
 	setUnityInstance: React.Dispatch<
-		React.SetStateAction<any | null>
+		React.SetStateAction<UnityInstance | null>
 	>;
+	onProgress: (progress: number) => void;
 }
 
 function UnityPlayer({
 	config,
-	setUnityInstance
+	setUnityInstance, onProgress
 }: UnityPlayerProps) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(
 		null
@@ -62,10 +64,10 @@ function UnityPlayer({
 
 				try {
 					await createUnityInstance(
-						canvasRef.current,
+						canvasRef.current!,
 						{ ...config },
-						() => {}
-					).then((unityInstance: any) => {
+						onProgress
+					).then((unityInstance: UnityInstance) => {
 						setUnityInstance(unityInstance);
 					});
 				} catch (message) {

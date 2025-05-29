@@ -68,28 +68,6 @@ const EmbedSelection: React.FC = () => {
 			</div>
 
 			<div className="checkbox-group">
-				<label>
-					<input
-						type="checkbox"
-						checked={allowFullscreen}
-						onChange={() =>
-							setAllowFullscreen(
-								!allowFullscreen
-							)
-						}
-					/>
-					Allow fullscreen
-				</label>
-				<label>
-					<input
-						type="checkbox"
-						checked={showFPS}
-						onChange={() =>
-							setShowFPS(!showFPS)
-						}
-					/>
-					FPS counter
-				</label>
 			</div>
 
 			<button

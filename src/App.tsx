@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 // import "./App.css";
 
@@ -12,13 +12,11 @@ import UnityConfig, {
 	DefaultUnityPlayerConfig
 } from "./types/UnityConfig";
 
+import LoadingBar from "./components/LoadingBar";
+import { useUnityInstance } from "./hooks/useUnityInstance";
+
 interface UnityProjectConfig {
 	buildUrl: string;
-}
-
-// UnityInstance interface to define the Unity instance methods
-interface UnityInstance {
-	SetFullscreen: (fullscreen: number) => void;
 }
 
 function App() {
@@ -42,16 +40,14 @@ function App() {
 	// Auth state for application
 	const [auth, _setAuth] = useState(true);
 
-	// State for unity instance
-	const [unityInstance, setUnityInstance] =
-		useState<UnityInstance | null>(null);
-
-	// Function (callback) to set fullscreen mode
-	const makeFullScreen = useCallback(() => {
-		if (unityInstance !== null) {
-			unityInstance.SetFullscreen(1);
-		}
-	}, [unityInstance]);
+	// Unity instance methods and state
+	const {
+		setUnityInstance,
+		makeFullScreen,
+		isLoading,
+		loadingProgress,
+		handleProgress
+	} = useUnityInstance();
 
 	if (!auth)
 		return (
@@ -70,9 +66,18 @@ function App() {
 							config.buildUrl
 						)}
 						setUnityInstance={setUnityInstance}
+						onProgress={handleProgress}
 					/>
 				) : (
 					<div>No player available.</div>
+				)}
+
+				{isLoading && (
+					<div className="loading-overlay">
+						<LoadingBar
+							progress={loadingProgress}
+						/>
+					</div>
 				)}
 			</div>
 		</>
