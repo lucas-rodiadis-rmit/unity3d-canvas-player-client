@@ -1,21 +1,30 @@
-/* Example loading bar styling */
-.loading-container {
-	width: 100%;
-	text-align: center;
-	padding: 1rem;
+/* Example for your LoadingBar container */
+.loading-bar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Fill parent height */
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
+/* Style for the bar itself */
 .loading-bar {
-	width: 80%;
-	height: 10px;
-	background-color: #ddd;
-	margin: 0 auto;
-	border-radius: 5px;
-	overflow: hidden;
+  width: 80%;             /* Responsive width */
+  max-width: 500px;       /* Limit max width */
+  height: 20px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
+/* Filled portion */
 .loading-bar-fill {
-	height: 100%;
-	background-color: #4caf50;
-	transition: width 0.3s ease-in-out;
+  height: 100%;
+  width: 0%;
+  background-color: #4caf50;
+  transition: width 0.3s ease;
 }
