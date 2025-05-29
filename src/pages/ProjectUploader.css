@@ -5,6 +5,8 @@ body {
 }
 
 .project-uploader {
+	position: relative;
+
 	max-width: 800px;
 	margin: 2rem auto;
 	padding: 1.5rem;
@@ -19,7 +21,8 @@ body {
 .project-uploader h2 {
 	text-align: center;
 	color: #feffff;
-	margin-bottom: 1.5rem;
+
+	margin: 0 auto 1.5rem;
 }
 
 /* Group for inputs with labels as h3 */
@@ -159,4 +162,16 @@ body {
 	justify-content: space-between;
 	color: white;
 	background-color: grey;
+}
+
+#back-button {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+
+	padding: 0.5em 1em;
+
+	margin: 0;
+
+	background-color: red;
 }

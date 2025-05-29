@@ -9,6 +9,8 @@ import useUploader from "../hooks/useUploader";
 import { API_URL } from "../constants";
 import { pingAPI } from "../hooks/useApi";
 
+import { useNavigate } from "react-router-dom";
+
 declare module "react" {
 	interface InputHTMLAttributes<T>
 		extends HTMLAttributes<T> {
@@ -31,7 +33,10 @@ function ProjectUploader() {
 		null
 	);
 
+	const navigate = useNavigate();
+
 	const [upload, uploadState] = useUploader();
+
 
 	const handleUploadClick = async () => {
 		// Show alerts if anything is missing or invalid
@@ -113,6 +118,17 @@ function ProjectUploader() {
 		}
 	};
 
+	function onClickBack() {
+		if (uploadState.status === "UPLOADING") {
+			alert("Please wait until the project is finished uploading before returning.");
+
+			return;
+		}
+
+		navigate("/embed");
+	}
+
+
 	const elements: Array<JSX.Element> = useMemo(() => {
 		const elements = [];
 		if (files) {
@@ -128,6 +144,9 @@ function ProjectUploader() {
 
 	return (
 		<div className="project-uploader">
+
+			<button id="back-button" onClick={onClickBack} >Back</button>
+
 			<h2>Upload a Unity Project</h2>
 
 			<div className="input-group">
