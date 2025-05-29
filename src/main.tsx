@@ -17,7 +17,7 @@ import XMLGenerator from "./pages/XMLGenerator.tsx";
 
 declare global {
 	interface Window {
-		LOCAL_DATA: { token?: string; returnUrl?: string };
+		LOCAL_DATA: { newToken?: string; returnUrl?: string };
 	}
 }
 

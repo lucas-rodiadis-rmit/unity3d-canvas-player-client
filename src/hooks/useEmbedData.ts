@@ -49,7 +49,7 @@ function useEmbedData() {
 		useIFrame: boolean
 	) => {
 		if (
-			!window.LOCAL_DATA.token ||
+			!window.LOCAL_DATA.newToken ||
 			!window.LOCAL_DATA.returnUrl
 		) {
 			alert(
