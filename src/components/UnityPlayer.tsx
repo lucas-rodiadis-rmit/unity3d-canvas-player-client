@@ -52,14 +52,7 @@ function UnityPlayer({
 			const script = document.createElement("script");
 			script.src = loaderUrl;
 			script.onload = async () => {
-				interface UnityWindow extends Window {
-					createUnityInstance?: (
-						canvas: HTMLCanvasElement,
-						config: UnityConfig,
-						onProgress: (progress: number) => void
-					) => Promise<UnityInstance>;
-				}
-				const createUnityInstance = (window as UnityWindow)
+				const createUnityInstance = (window as any)
 					.createUnityInstance;
 
 				if (!createUnityInstance) {
