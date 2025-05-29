@@ -119,10 +119,7 @@ function useUploader(): [UploadFunction, UploaderStatus] {
 		const chunk = file.slice(start, end);
 
 		fd.append("chunk", chunk);
-		fd.append(
-			"offset",
-			String(state.chunkIndex * CHUNK_SIZE)
-		);
+		fd.append("offset", String(start));
 
 		pingURL({
 			method: "POST",
