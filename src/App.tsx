@@ -61,24 +61,26 @@ function App() {
 			<ControlBar makeFullScreen={makeFullScreen} />
 			<div className="unity-player-main">
 				{config !== null ? (
-					<UnityPlayer
-						config={DefaultUnityPlayerConfig(
-							config.buildUrl
+					<>
+						<UnityPlayer
+							config={DefaultUnityPlayerConfig(
+								config.buildUrl
+							)}
+							setUnityInstance={setUnityInstance}
+							onProgress={handleProgress}
+						/>
+						{isLoading && (
+							<div className="loading-overlay">
+								<LoadingBar
+									progress={loadingProgress}
+								/>
+							</div>
 						)}
-						setUnityInstance={setUnityInstance}
-						onProgress={handleProgress}
-					/>
+					</>
 				) : (
 					<div>No player available.</div>
 				)}
 
-				{isLoading && (
-					<div className="loading-overlay">
-						<LoadingBar
-							progress={loadingProgress}
-						/>
-					</div>
-				)}
 			</div>
 		</>
 	);
