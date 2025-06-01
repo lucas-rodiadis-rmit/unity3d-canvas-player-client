@@ -12,6 +12,8 @@ import UnityConfig, {
 	DefaultUnityPlayerConfig
 } from "./types/UnityConfig";
 
+import "./App.css";
+
 import LoadingBar from "./components/LoadingBar";
 import { useUnityInstance } from "./hooks/useUnityInstance";
 
@@ -78,7 +80,9 @@ function App() {
 						)}
 					</>
 				) : (
-					<div>No player available.</div>
+					// Centered message when no player is available
+					// <div>No player available.</div>
+					<div className="no-player-message">No player available.</div>
 				)}
 
 			</div>
