@@ -22,7 +22,7 @@ interface UnityProjectConfig {
 }
 
 function App() {
-	let { project_id } = useParams();
+	const { project_id } = useParams();
 
 	const apiResponse = useAPI<UnityProjectConfig>({
 		endpoint: `unity-config/${project_id}`,
@@ -36,7 +36,14 @@ function App() {
 			);
 		}
 
+		if (apiResponse.status === "ERROR") {
+			console.error("Error fetching Unity project config:", apiResponse.message);
+			return null;
+		}
+
 		return null;
+		// Disable warning about exhaustive dependencies (we only care about status)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [apiResponse.status]);
 
 	// Auth state for application
@@ -62,12 +69,16 @@ function App() {
 		<>
 			<ControlBar makeFullScreen={makeFullScreen} />
 			<div className="unity-player-main">
-				{config !== null ? (
+				{apiResponse.status === "ERROR" ? (
+					<div className="no-player-message">No player available.</div>
+				) : config === null ? (
+					<div className="loading-overlay">
+						<div className="loading-circle" />
+					</div>
+				) : (
 					<>
 						<UnityPlayer
-							config={DefaultUnityPlayerConfig(
-								config.buildUrl
-							)}
+							config={config}
 							setUnityInstance={setUnityInstance}
 							onProgress={handleProgress}
 						/>
@@ -79,9 +90,6 @@ function App() {
 							</div>
 						)}
 					</>
-				) : (
-					// When no player is available
-					<div className="no-player-message">No player available.</div>
 				)}
 
 			</div>
