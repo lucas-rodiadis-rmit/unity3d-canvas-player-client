@@ -80,8 +80,7 @@ function App() {
 						)}
 					</>
 				) : (
-					// Centered message when no player is available
-					// <div>No player available.</div>
+					// When no player is available
 					<div className="no-player-message">No player available.</div>
 				)}
 
