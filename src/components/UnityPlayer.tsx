@@ -5,11 +5,15 @@ import "./UnityPlayer.css";
 import useCurrentSize from "../hooks/useCurrentSize";
 import UnityConfig from "../types/UnityConfig";
 import type { UnityInstance } from "../types/UnityInstance";
+import loadUnityInstance from "./utils/LoadUnityInstance";
 
 export const defaultBuildUrl: string = "/ClinicSim/Build";
 export const defaultLoaderUrl: string =
 	defaultBuildUrl + "/buildweb.loader.js";
 
+/**
+ * Props for the UnityPlayer component.
+ */
 interface UnityPlayerProps {
 	config: UnityConfig;
 	setUnityInstance: React.Dispatch<
@@ -20,12 +24,12 @@ interface UnityPlayerProps {
 
 function UnityPlayer({
 	config,
-	setUnityInstance, onProgress
+	setUnityInstance,
+	onProgress
 }: UnityPlayerProps) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(
 		null
 	);
-
 	const containerRef = useRef<HTMLDivElement | null>(
 		null
 	);
@@ -38,54 +42,17 @@ function UnityPlayer({
 		console.log(width, height);
 	}, [width, height]);
 
-	/* When the page first loads, or the canvas reference changes, load the game */
 	useEffect(() => {
 		if (!canvasRef.current) return;
 
-		const runLoader = async () => {
-			const loaderUrl: string =
-				config.buildUrl + "/buildweb.loader.js";
-			console.log(
-				`Using Unity loader from ${loaderUrl}`
-			);
-
-			const script = document.createElement("script");
-			script.src = loaderUrl;
-			script.onload = async () => {
-				interface UnityWindow extends Window {
-					createUnityInstance?: (
-						canvas: HTMLCanvasElement,
-						config: UnityConfig,
-						onProgress: (progress: number) => void
-					) => Promise<UnityInstance>;
-				}
-				const createUnityInstance = (window as UnityWindow)
-					.createUnityInstance;
-
-				if (!createUnityInstance) {
-					console.error(
-						"createUnityInstance function was not found in the loader js."
-					);
-					return;
-				}
-
-				try {
-					await createUnityInstance(
-						canvasRef.current!,
-						{ ...config },
-						onProgress
-					).then((unityInstance: UnityInstance) => {
-						setUnityInstance(unityInstance);
-					});
-				} catch (message) {
-					alert(message);
-				}
-			};
-
-			document.body.appendChild(script);
-		};
-
-		runLoader();
+		loadUnityInstance({
+			canvas: canvasRef.current,
+			config,
+			onProgress,
+			onLoaded: setUnityInstance
+		});
+		// Disable exhaustive-deps rule as it will cause unnecessary re-renders
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [canvasRef]);
 
 	console.log("Re-rendering Unity Component");
