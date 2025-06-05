@@ -7,7 +7,10 @@ interface ControlBarProps {
 	quitUnity: () => Promise<void>;
 }
 
-function ControlBar({ makeFullScreen, quitUnity }: ControlBarProps) {
+function ControlBar({
+	makeFullScreen,
+	quitUnity
+}: ControlBarProps) {
 	const [visible, setVisible] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false); // changed
 
@@ -58,9 +61,19 @@ function ControlBar({ makeFullScreen, quitUnity }: ControlBarProps) {
 					<button
 						className="icon-button"
 						title="Restart"
-						onClick={() => {
-							// Reload the page to restart the Unity instance
-							window.location.reload();
+						onClick={async () => {
+							// Close the Unity instance before restarting Unity instance
+							await quitUnity()
+								.catch((error) => {
+									console.error(
+										"Error quitting Unity:",
+										error
+									);
+								})
+								// If successful, reload the page to restart the Unity instance
+								.then(() => {
+									window.location.reload();
+								});
 						}}
 						aria-label="Restart"
 					>
@@ -108,9 +121,14 @@ function ControlBar({ makeFullScreen, quitUnity }: ControlBarProps) {
 						title="Close"
 						onClick={async () => {
 							// Close the Unity instance
-							await quitUnity().catch((error) => {
-								console.error("Error quitting Unity:", error);
-							});
+							await quitUnity().catch(
+								(error) => {
+									console.error(
+										"Error quitting Unity:",
+										error
+									);
+								}
+							);
 						}}
 						aria-label="Close"
 					>
