@@ -120,8 +120,7 @@ function ControlBar({
 							// Need to check if unityInstance is defined before quitting
 							// to prevent errors 
 							if (
-								unityInstance !== null ||
-								unityInstance !== undefined
+								unityInstance !== null
 							) {
 								setLoading(true);
 								quitUnity()
