@@ -29,6 +29,7 @@ function App() {
 
 	// Unity instance methods and state
 	const {
+		unityInstance,
 		quitUnity,
 		setUnityInstance,
 		makeFullScreen,
@@ -47,6 +48,7 @@ function App() {
 	return (
 		<>
 			<ControlBar
+				unityInstance={unityInstance}
 				makeFullScreen={makeFullScreen}
 				setShowUnityPlayer={setShowUnityPlayer}
 				quitUnity={quitUnity}

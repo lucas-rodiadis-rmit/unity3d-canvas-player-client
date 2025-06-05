@@ -1,8 +1,10 @@
 import { useState } from "react";
+import type { UnityInstance } from "../types/UnityInstance"; // adjust the import path as needed
 import "./ControlBar.css";
 import MenuModal from "./utils/MenuModal";
 
 interface ControlBarProps {
+	unityInstance: UnityInstance | null;
 	makeFullScreen: () => void;
 	setShowUnityPlayer?: (show: boolean) => void;
 	quitUnity: () => Promise<void>;
@@ -10,6 +12,7 @@ interface ControlBarProps {
 }
 
 function ControlBar({
+	unityInstance,
 	makeFullScreen,
 	setShowUnityPlayer,
 	quitUnity,
@@ -114,16 +117,26 @@ function ControlBar({
 						className="icon-button"
 						title="Close"
 						onClick={async () => {
-							setLoading(true);
-							quitUnity()
-								.catch((error) => {
-									// handle error if needed
-									console.error("Error quitting Unity instance: ", error);
-								})
-								.finally(() => {
-									setLoading(false);
-								});
-							setShowUnityPlayer?.(false);
+							// Need to check if unityInstance is defined before quitting
+							// to prevent errors 
+							if (
+								unityInstance !== null ||
+								unityInstance !== undefined
+							) {
+								setLoading(true);
+								quitUnity()
+									.catch((error) => {
+										// handle error if needed
+										console.error(
+											"Error quitting Unity instance: ",
+											error
+										);
+									})
+									.finally(() => {
+										setLoading(false);
+									});
+								setShowUnityPlayer?.(false);
+							}
 						}}
 						aria-label="Close"
 					>
