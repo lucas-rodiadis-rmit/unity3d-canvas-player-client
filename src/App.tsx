@@ -1,53 +1,21 @@
-import { useMemo, useState } from "react";
-
-// import "./App.css";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import ControlBar from "./components/ControlBar";
-
-import UnityPlayer from "./components/UnityPlayer";
-
-import { useParams } from "react-router-dom";
-import useAPI from "./hooks/useApi";
-import UnityConfig, {
-	DefaultUnityPlayerConfig
-} from "./types/UnityConfig";
-
-import "./App.css";
-
 import LoadingBar from "./components/LoadingBar";
+import UnityPlayer from "./components/UnityPlayer";
+import useUnityConfig from "./hooks/useUnityConfig";
 import { useUnityInstance } from "./hooks/useUnityInstance";
 
-interface UnityProjectConfig {
-	buildUrl: string;
-}
+import "./App.css";
 
 function App() {
 	const { project_id } = useParams();
 
-	const apiResponse = useAPI<UnityProjectConfig>({
-		endpoint: `unity-config/${project_id}`,
-		method: "GET"
-	});
-
-	const config = useMemo((): UnityConfig | null => {
-		if (apiResponse.status === "SUCCESS") {
-			return DefaultUnityPlayerConfig(
-				apiResponse.data.buildUrl
-			);
-		}
-
-		if (apiResponse.status === "ERROR") {
-			console.error(
-				"Error fetching Unity project config:",
-				apiResponse.message
-			);
-			return null;
-		}
-
-		return null;
-		// Disable warning about exhaustive dependencies (we only care about status)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [apiResponse.status]);
+	// Fetch Unity project configuration
+	const { config, apiResponse } = useUnityConfig(
+		project_id? project_id : ""
+	);
 
 	// Auth state for application
 	const [auth, _setAuth] = useState(true);
