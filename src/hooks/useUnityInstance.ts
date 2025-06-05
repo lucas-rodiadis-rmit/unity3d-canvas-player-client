@@ -14,11 +14,11 @@ export const useUnityInstance = () => {
 
 	// State to manage loading state
 	const [projectIsLoading, setProjectIsLoading] =
-		useState(true);
+		useState<boolean>(true);
 
 	// State to control visibility of the Unity player
 	const [showUnityPlayer, setShowUnityPlayer] =
-		useState(true);
+		useState<boolean>(true);
 
 	// Function to handle progress updates from the Unity instance
 	const handleProgress = (progress: number) => {
@@ -41,7 +41,7 @@ export const useUnityInstance = () => {
 	// Function to quit the Unity instance
 	const quitUnity =
 		useCallback(async (): Promise<void> => {
-			if (unityInstance !== null) {
+			if (unityInstance) {
 				setFetchLoading(true);
 				await unityInstance
 					.Quit()
@@ -51,19 +51,17 @@ export const useUnityInstance = () => {
 					.finally(() => {
 						setFetchLoading(false);
 					});
-				setShowUnityPlayer?.(false);
+				setShowUnityPlayer(false);
 			}
 		}, [unityInstance]);
 
 	// Function to refresh the Unity instance
 	const refreshUnity = useCallback(
 		async (window: Window): Promise<void> => {
-			if (!projectIsLoading)
-				await quitUnity().finally(() => {
-					window.location.reload();
-				});
+			// Reload the page
+			window.location.reload();
 		},
-		[projectIsLoading, quitUnity]
+		[]
 	);
 
 	return {
