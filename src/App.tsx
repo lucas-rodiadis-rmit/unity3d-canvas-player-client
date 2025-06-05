@@ -14,11 +14,15 @@ function App() {
 
 	// Fetch Unity project configuration
 	const { config, apiResponse } = useUnityConfig(
-		project_id? project_id : ""
+		project_id ? project_id : ""
 	);
 
 	// Auth state for application
 	const [auth, _setAuth] = useState(true);
+
+	// State to control visibility of the Unity player
+	const [showUnityPlayer, setShowUnityPlayer] =
+		useState(true);
 
 	// Unity instance methods and state
 	const {
@@ -38,11 +42,18 @@ function App() {
 
 	return (
 		<>
-			<ControlBar makeFullScreen={makeFullScreen} />
+			<ControlBar
+				makeFullScreen={makeFullScreen}
+				setShowUnityPlayer={setShowUnityPlayer}
+			/>
 			<div className="unity-player-main">
 				{apiResponse.status === "ERROR" ? (
 					<div className="no-player-message">
 						No player available.
+					</div>
+				) : showUnityPlayer === false ? (
+					<div className="no-player-message">
+						Unity player is hidden.
 					</div>
 				) : config === null ? (
 					<div className="loading-overlay">

@@ -4,9 +4,10 @@ import MenuModal from "./utils/MenuModal";
 
 interface ControlBarProps {
 	makeFullScreen: () => void;
+	setShowUnityPlayer?: (show: boolean) => void;
 }
 
-function ControlBar({ makeFullScreen }: ControlBarProps) {
+function ControlBar({ makeFullScreen, setShowUnityPlayer}: ControlBarProps) {
 	const [visible, setVisible] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false); // changed
 
@@ -106,7 +107,7 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 						className="icon-button"
 						title="Close"
 						onClick={() => {
-							/* your close logic here */
+							setShowUnityPlayer?.(false);
 						}}
 						aria-label="Close"
 					>
