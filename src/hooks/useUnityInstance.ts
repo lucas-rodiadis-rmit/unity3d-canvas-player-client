@@ -6,16 +6,28 @@ export const useUnityInstance = () => {
 	const [unityInstance, setUnityInstance] =
 		useState<UnityInstance | null>(null);
 
-    // State to manage loading progress and loading state
+	const [fetchLoading, setFetchLoading] = useState(false);
+
+	// State to manage loading progress and loading state
 	const [loadingProgress, setLoadingProgress] =
 		useState<number>(0);
-    // State to manage loading state
-	const [isLoading, setIsLoading] = useState(true);
-    // Function to handle progress updates from the Unity instance
+
+	// State to manage loading state
+	const [projectIsLoading, setProjectIsLoading] =
+		useState(true);
+
+	// State to control visibility of the Unity player
+	const [showUnityPlayer, setShowUnityPlayer] =
+		useState(true);
+
+	// Function to handle progress updates from the Unity instance
 	const handleProgress = (progress: number) => {
 		setLoadingProgress(progress);
 		if (progress >= 0.95) {
-			setTimeout(() => setIsLoading(false), 300); // smooth fadeout
+			setTimeout(
+				() => setProjectIsLoading(false),
+				300
+			); // smooth fadeout
 		}
 	};
 
@@ -27,17 +39,30 @@ export const useUnityInstance = () => {
 	}, [unityInstance]);
 
 	// Function to quit the Unity instance
-	const quitUnity = useCallback( async () => {
+	const quitUnity = useCallback(async (): Promise<void> => {
 		if (unityInstance !== null) {
-			await unityInstance.Quit()
+			setFetchLoading(true);
+			await unityInstance
+				.Quit()
+				.catch((error) => {
+					throw error;
+				})
+				.finally(() => {
+					setFetchLoading(false);
+				});
+			setShowUnityPlayer?.(false);
 		}
 	}, [unityInstance]);
 
 	return {
 		unityInstance,
-        loadingProgress,
-        isLoading,
-        handleProgress,
+		showUnityPlayer,
+		setShowUnityPlayer,
+		fetchLoading,
+		setFetchLoading,
+		loadingProgress,
+		isLoading: projectIsLoading,
+		handleProgress,
 		setUnityInstance,
 		makeFullScreen,
 		quitUnity

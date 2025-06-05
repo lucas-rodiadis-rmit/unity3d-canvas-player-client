@@ -19,17 +19,12 @@ function App() {
 
 	// Auth state for application
 	const [auth, _setAuth] = useState(true);
-
-	// State to control visibility of the Unity player
-	const [showUnityPlayer, setShowUnityPlayer] =
-		useState(true);
 	
-	// Loading state
-	const [loading, setLoading] = useState(false);
 
 	// Unity instance methods and state
 	const {
-		unityInstance,
+		showUnityPlayer,
+		fetchLoading,
 		quitUnity,
 		setUnityInstance,
 		makeFullScreen,
@@ -48,11 +43,8 @@ function App() {
 	return (
 		<>
 			<ControlBar
-				unityInstance={unityInstance}
 				makeFullScreen={makeFullScreen}
-				setShowUnityPlayer={setShowUnityPlayer}
 				quitUnity={quitUnity}
-				setLoading={setLoading}
 			/>
 			<div className="unity-player-main">
 				{apiResponse.status === "ERROR" ? (
@@ -65,7 +57,7 @@ function App() {
 							Unity player is hidden.
 						</div>
 					</div>
-				) : config === null || loading === true ? (
+				) : config === null || fetchLoading === true ? (
 					<div className="loading-overlay">
 						<div className="loading-circle" />
 					</div>

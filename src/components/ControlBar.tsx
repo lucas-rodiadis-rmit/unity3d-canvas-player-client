@@ -1,23 +1,13 @@
 import { useState } from "react";
-import type { UnityInstance } from "../types/UnityInstance"; // adjust the import path as needed
 import "./ControlBar.css";
 import MenuModal from "./utils/MenuModal";
 
 interface ControlBarProps {
-	unityInstance: UnityInstance | null;
 	makeFullScreen: () => void;
-	setShowUnityPlayer?: (show: boolean) => void;
 	quitUnity: () => Promise<void>;
-	setLoading: (loading: boolean) => void;
 }
 
-function ControlBar({
-	unityInstance,
-	makeFullScreen,
-	setShowUnityPlayer,
-	quitUnity,
-	setLoading
-}: ControlBarProps) {
+function ControlBar({ makeFullScreen, quitUnity }: ControlBarProps) {
 	const [visible, setVisible] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false); // changed
 
@@ -117,25 +107,10 @@ function ControlBar({
 						className="icon-button"
 						title="Close"
 						onClick={async () => {
-							// Need to check if unityInstance is defined before quitting
-							// to prevent errors 
-							if (
-								unityInstance !== null
-							) {
-								setLoading(true);
-								quitUnity()
-									.catch((error) => {
-										// handle error if needed
-										console.error(
-											"Error quitting Unity instance: ",
-											error
-										);
-									})
-									.finally(() => {
-										setLoading(false);
-									});
-								setShowUnityPlayer?.(false);
-							}
+							// Close the Unity instance
+							await quitUnity().catch((error) => {
+								console.error("Error quitting Unity:", error);
+							});
 						}}
 						aria-label="Close"
 					>
