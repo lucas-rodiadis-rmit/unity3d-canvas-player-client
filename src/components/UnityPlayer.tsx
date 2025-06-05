@@ -61,7 +61,7 @@ function UnityPlayer({
 
 	return (
 		<div ref={containerRef} id="canvas-unity-player">
-			<title>Unity WebGL Player | Nursing XR</title>
+			<title>Canvas Unity WebGL Player</title>
 			<canvas
 				ref={canvasRef}
 				id="unity-canvas"
