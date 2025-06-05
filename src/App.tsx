@@ -23,9 +23,13 @@ function App() {
 	// State to control visibility of the Unity player
 	const [showUnityPlayer, setShowUnityPlayer] =
 		useState(true);
+	
+	// Loading state
+	const [loading, setLoading] = useState(false);
 
 	// Unity instance methods and state
 	const {
+		quitUnity,
 		setUnityInstance,
 		makeFullScreen,
 		isLoading,
@@ -45,6 +49,8 @@ function App() {
 			<ControlBar
 				makeFullScreen={makeFullScreen}
 				setShowUnityPlayer={setShowUnityPlayer}
+				quitUnity={quitUnity}
+				setLoading={setLoading}
 			/>
 			<div className="unity-player-main">
 				{apiResponse.status === "ERROR" ? (
@@ -57,7 +63,7 @@ function App() {
 							Unity player is hidden.
 						</div>
 					</div>
-				) : config === null ? (
+				) : config === null || loading === true ? (
 					<div className="loading-overlay">
 						<div className="loading-circle" />
 					</div>

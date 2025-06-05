@@ -16,4 +16,5 @@ export interface UnityWindow extends Window {
  */
 export interface UnityInstance {
 	SetFullscreen: (fullscreen: number) => void;
+	Quit: () => Promise<void>;
 }

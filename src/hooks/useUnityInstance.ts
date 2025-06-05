@@ -26,12 +26,20 @@ export const useUnityInstance = () => {
 		}
 	}, [unityInstance]);
 
+	// Function to quit the Unity instance
+	const quitUnity = useCallback( async () => {
+		if (unityInstance !== null) {
+			await unityInstance.Quit()
+		}
+	}, [unityInstance]);
+
 	return {
 		unityInstance,
         loadingProgress,
         isLoading,
         handleProgress,
 		setUnityInstance,
-		makeFullScreen
+		makeFullScreen,
+		quitUnity
 	};
 };

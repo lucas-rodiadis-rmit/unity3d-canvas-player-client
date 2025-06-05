@@ -5,9 +5,16 @@ import MenuModal from "./utils/MenuModal";
 interface ControlBarProps {
 	makeFullScreen: () => void;
 	setShowUnityPlayer?: (show: boolean) => void;
+	quitUnity: () => Promise<void>;
+	setLoading: (loading: boolean) => void;
 }
 
-function ControlBar({ makeFullScreen, setShowUnityPlayer}: ControlBarProps) {
+function ControlBar({
+	makeFullScreen,
+	setShowUnityPlayer,
+	quitUnity,
+	setLoading
+}: ControlBarProps) {
 	const [visible, setVisible] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false); // changed
 
@@ -106,7 +113,16 @@ function ControlBar({ makeFullScreen, setShowUnityPlayer}: ControlBarProps) {
 					<button
 						className="icon-button"
 						title="Close"
-						onClick={() => {
+						onClick={async () => {
+							setLoading(true);
+							quitUnity()
+								.catch((error) => {
+									// handle error if needed
+									console.error("Error quitting Unity instance: ", error);
+								})
+								.finally(() => {
+									setLoading(false);
+								});
 							setShowUnityPlayer?.(false);
 						}}
 						aria-label="Close"
