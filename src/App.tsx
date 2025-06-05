@@ -52,8 +52,10 @@ function App() {
 						No player available.
 					</div>
 				) : showUnityPlayer === false ? (
-					<div className="no-player-message-exited">
-						Unity player is hidden.
+					<div className="blur-overlay">
+						<div className="no-player-message-exited">
+							Unity player is hidden.
+						</div>
 					</div>
 				) : config === null ? (
 					<div className="loading-overlay">
