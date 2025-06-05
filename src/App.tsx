@@ -52,7 +52,7 @@ function App() {
 						No player available.
 					</div>
 				) : showUnityPlayer === false ? (
-					<div className="no-player-message">
+					<div className="no-player-message-exited">
 						Unity player is hidden.
 					</div>
 				) : config === null ? (
