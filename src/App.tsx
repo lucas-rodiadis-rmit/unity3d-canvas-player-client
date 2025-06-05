@@ -70,12 +70,7 @@ function App() {
 
 	return (
 		<>
-			<ControlBar
-				makeFullScreen={makeFullScreen}
-				config={config}
-				setUnityInstance={setUnityInstance}
-				onProgress={handleProgress}
-			/>
+			<ControlBar makeFullScreen={makeFullScreen} />
 			<div className="unity-player-main">
 				{apiResponse.status === "ERROR" ? (
 					<div className="no-player-message">

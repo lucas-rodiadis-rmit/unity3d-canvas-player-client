@@ -1,25 +1,12 @@
 import { useState } from "react";
-import UnityConfig from "../types/UnityConfig";
-import { UnityInstance } from "../types/UnityInstance";
 import "./ControlBar.css";
-import LoadUnityInstance from "./utils/LoadUnityInstance";
 import MenuModal from "./utils/MenuModal";
 
 interface ControlBarProps {
 	makeFullScreen: () => void;
-	config: UnityConfig | null;
-	setUnityInstance: React.Dispatch<
-		React.SetStateAction<UnityInstance | null>
-	>;
-	onProgress: (progress: number) => void;
 }
 
-function ControlBar({
-	makeFullScreen,
-	config,
-	setUnityInstance,
-	onProgress
-}: ControlBarProps) {
+function ControlBar({ makeFullScreen }: ControlBarProps) {
 	const [visible, setVisible] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false); // changed
 
@@ -71,23 +58,8 @@ function ControlBar({
 						className="icon-button"
 						title="Restart"
 						onClick={() => {
-							// Check if config exists before reloading
-							if (config) {
-								LoadUnityInstance({
-									canvas: document.getElementById(
-										"unity-canvas"
-									) as HTMLCanvasElement,
-									config,
-									onProgress,
-									onLoaded:
-										setUnityInstance
-								});
-							} else {
-								// Log an error if config is null
-								console.error(
-									"Unity config is null. Cannot reload Unity instance."
-								);
-							}
+							// Reload the page to restart the Unity instance
+							window.location.reload();
 						}}
 						aria-label="Restart"
 					>
