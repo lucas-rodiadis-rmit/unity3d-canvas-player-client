@@ -5,7 +5,7 @@ import MenuModal from "./utils/MenuModal";
 interface ControlBarProps {
 	makeFullScreen: () => void;
 	quitUnity: () => Promise<void>;
-	refreshUnity: () => Promise<void>;
+	refreshUnity: (window: Window) => Promise<void>;
 }
 
 function ControlBar({
@@ -65,7 +65,7 @@ function ControlBar({
 						title="Restart"
 						onClick={async () => {
 							// Restart the Unity instance
-							await refreshUnity().catch(
+							await refreshUnity(window).catch(
 								(error) => {
 									console.error(
 										"Error refreshing Unity:",

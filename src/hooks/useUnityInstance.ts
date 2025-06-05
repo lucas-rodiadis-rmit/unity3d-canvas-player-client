@@ -56,13 +56,15 @@ export const useUnityInstance = () => {
 		}, [unityInstance]);
 
 	// Function to refresh the Unity instance
-	const refreshUnity =
-		useCallback(async (): Promise<void> => {
+	const refreshUnity = useCallback(
+		async (window: Window): Promise<void> => {
 			if (!projectIsLoading)
 				await quitUnity().finally(() => {
 					window.location.reload();
 				});
-		}, [projectIsLoading, quitUnity]);
+		},
+		[projectIsLoading, quitUnity]
+	);
 
 	return {
 		unityInstance,
