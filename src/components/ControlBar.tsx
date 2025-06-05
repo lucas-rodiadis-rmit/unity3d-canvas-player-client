@@ -5,11 +5,13 @@ import MenuModal from "./utils/MenuModal";
 interface ControlBarProps {
 	makeFullScreen: () => void;
 	quitUnity: () => Promise<void>;
+	refreshUnity: () => Promise<void>;
 }
 
 function ControlBar({
 	makeFullScreen,
-	quitUnity
+	quitUnity,
+	refreshUnity
 }: ControlBarProps) {
 	const [visible, setVisible] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false); // changed
@@ -62,18 +64,15 @@ function ControlBar({
 						className="icon-button"
 						title="Restart"
 						onClick={async () => {
-							// Close the Unity instance before restarting Unity instance
-							await quitUnity()
-								.catch((error) => {
+							// Restart the Unity instance
+							await refreshUnity().catch(
+								(error) => {
 									console.error(
-										"Error quitting Unity:",
+										"Error refreshing Unity:",
 										error
 									);
-								})
-								// If successful, reload the page to restart the Unity instance
-								.then(() => {
-									window.location.reload();
-								});
+								}
+							);
 						}}
 						aria-label="Restart"
 					>

@@ -26,6 +26,7 @@ function App() {
 		showUnityPlayer,
 		fetchLoading,
 		quitUnity,
+		refreshUnity,
 		setUnityInstance,
 		makeFullScreen,
 		isLoading,
@@ -45,6 +46,7 @@ function App() {
 			<ControlBar
 				makeFullScreen={makeFullScreen}
 				quitUnity={quitUnity}
+				refreshUnity={refreshUnity}
 			/>
 			<div className="unity-player-main">
 				{apiResponse.status === "ERROR" ? (

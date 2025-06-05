@@ -39,20 +39,30 @@ export const useUnityInstance = () => {
 	}, [unityInstance]);
 
 	// Function to quit the Unity instance
-	const quitUnity = useCallback(async (): Promise<void> => {
-		if (unityInstance !== null) {
-			setFetchLoading(true);
-			await unityInstance
-				.Quit()
-				.catch((error) => {
-					throw error;
-				})
-				.finally(() => {
-					setFetchLoading(false);
+	const quitUnity =
+		useCallback(async (): Promise<void> => {
+			if (unityInstance !== null) {
+				setFetchLoading(true);
+				await unityInstance
+					.Quit()
+					.catch((error) => {
+						throw error;
+					})
+					.finally(() => {
+						setFetchLoading(false);
+					});
+				setShowUnityPlayer?.(false);
+			}
+		}, [unityInstance]);
+
+	// Function to refresh the Unity instance
+	const refreshUnity =
+		useCallback(async (): Promise<void> => {
+			if (!projectIsLoading)
+				await quitUnity().finally(() => {
+					window.location.reload();
 				});
-			setShowUnityPlayer?.(false);
-		}
-	}, [unityInstance]);
+		}, [projectIsLoading, quitUnity]);
 
 	return {
 		unityInstance,
@@ -65,6 +75,7 @@ export const useUnityInstance = () => {
 		handleProgress,
 		setUnityInstance,
 		makeFullScreen,
-		quitUnity
+		quitUnity,
+		refreshUnity
 	};
 };
