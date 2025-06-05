@@ -42,6 +42,8 @@ function UnityPlayer({
 		console.log(width, height);
 	}, [width, height]);
 
+	// Load Unity instance when the component mounts
+	// and when the canvasRef changes.
 	useEffect(() => {
 		if (!canvasRef.current) return;
 

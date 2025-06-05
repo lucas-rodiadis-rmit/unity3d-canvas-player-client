@@ -37,7 +37,10 @@ function App() {
 		}
 
 		if (apiResponse.status === "ERROR") {
-			console.error("Error fetching Unity project config:", apiResponse.message);
+			console.error(
+				"Error fetching Unity project config:",
+				apiResponse.message
+			);
 			return null;
 		}
 
@@ -67,10 +70,17 @@ function App() {
 
 	return (
 		<>
-			<ControlBar makeFullScreen={makeFullScreen} />
+			<ControlBar
+				makeFullScreen={makeFullScreen}
+				config={config}
+				setUnityInstance={setUnityInstance}
+				onProgress={handleProgress}
+			/>
 			<div className="unity-player-main">
 				{apiResponse.status === "ERROR" ? (
-					<div className="no-player-message">No player available.</div>
+					<div className="no-player-message">
+						No player available.
+					</div>
 				) : config === null ? (
 					<div className="loading-overlay">
 						<div className="loading-circle" />
@@ -79,19 +89,22 @@ function App() {
 					<>
 						<UnityPlayer
 							config={config}
-							setUnityInstance={setUnityInstance}
+							setUnityInstance={
+								setUnityInstance
+							}
 							onProgress={handleProgress}
 						/>
 						{isLoading && (
 							<div className="loading-overlay">
 								<LoadingBar
-									progress={loadingProgress}
+									progress={
+										loadingProgress
+									}
 								/>
 							</div>
 						)}
 					</>
 				)}
-
 			</div>
 		</>
 	);
