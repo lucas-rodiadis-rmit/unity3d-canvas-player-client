@@ -48,12 +48,15 @@ function useEmbedData() {
 		appConfig: UnityAppConfig,
 		useIFrame: boolean
 	) => {
-		if (
-			!window.LOCAL_DATA.newToken ||
-			!window.LOCAL_DATA.returnUrl
-		) {
+		if (!window.LOCAL_DATA.newToken) {
 			alert(
-				"Missing token or return URL. Try refreshing the page."
+				"Missing token. Try refreshing the page."
+			);
+			return;
+		}
+		if (!window.LOCAL_DATA.returnUrl) {
+			alert(
+				"Missing return URL. Try refreshing the page."
 			);
 			return;
 		}
