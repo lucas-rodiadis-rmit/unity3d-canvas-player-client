@@ -1,21 +1,16 @@
+import { UnityAppConfig } from "@api/types";
 import { useMemo } from "react";
-import UnityConfig, {
-	DefaultUnityPlayerConfig
-} from "../types/UnityConfig";
-import UnityProjectConfig from "../types/UnityProjectConfig";
 import useAPI from "./useApi";
 
 function useUnityConfig(projectId: string) {
-	const apiResponse = useAPI<UnityProjectConfig>({
+	const apiResponse = useAPI<UnityAppConfig>({
 		endpoint: `unity-config/${projectId}`,
 		method: "GET"
 	});
 
-	const config = useMemo((): UnityConfig | null => {
+	const config = useMemo((): UnityAppConfig | null => {
 		if (apiResponse.status === "SUCCESS") {
-			return DefaultUnityPlayerConfig(
-				apiResponse.data.buildUrl
-			);
+			return apiResponse.data;
 		}
 
 		if (apiResponse.status === "ERROR") {

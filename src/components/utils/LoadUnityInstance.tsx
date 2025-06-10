@@ -1,4 +1,4 @@
-import { UnityConfig } from '../../types/UnityConfig';
+import { UnityAppConfig } from '@api/types';
 import { UnityInstance, UnityWindow } from '../../types/UnityInstance';
 
 /**
@@ -11,12 +11,11 @@ async function loadUnityInstance({
 	onLoaded
 }: {
 	canvas: HTMLCanvasElement;
-	config: UnityConfig;
+	config: UnityAppConfig;
 	onProgress: (progress: number) => void;
 	onLoaded: (instance: UnityInstance) => void;
 }): Promise<void> {
-	const loaderUrl =
-		config.buildUrl + "/buildweb.loader.js";
+	const loaderUrl = config.instanceOptions.loaderUrl;
 	console.log(`Using Unity loader from ${loaderUrl}`);
 
 	return new Promise<void>((resolve, reject) => {
@@ -40,7 +39,7 @@ async function loadUnityInstance({
 				const unityInstance =
 					await createUnityInstance(
 						canvas,
-						{ ...config },
+						{ ...config.instanceOptions },
 						onProgress
 					);
 				onLoaded(unityInstance);

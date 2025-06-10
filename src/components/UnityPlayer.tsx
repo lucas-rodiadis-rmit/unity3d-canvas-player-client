@@ -3,9 +3,10 @@ import { useEffect, useRef } from "react";
 import "./UnityPlayer.css";
 
 import useCurrentSize from "../hooks/useCurrentSize";
-import UnityConfig from "../types/UnityConfig";
 import type { UnityInstance } from "../types/UnityInstance";
 import loadUnityInstance from "./utils/LoadUnityInstance";
+
+import { UnityAppConfig } from "@api/types";
 
 export const defaultBuildUrl: string = "/ClinicSim/Build";
 export const defaultLoaderUrl: string =
@@ -15,7 +16,7 @@ export const defaultLoaderUrl: string =
  * Props for the UnityPlayer component.
  */
 interface UnityPlayerProps {
-	config: UnityConfig;
+	config: UnityAppConfig;
 	setUnityInstance: React.Dispatch<
 		React.SetStateAction<UnityInstance | null>
 	>;
@@ -36,7 +37,8 @@ function UnityPlayer({
 
 	const { width, height } = useCurrentSize();
 
-	config.matchWebGLToCanvasSize = false;
+	// Force the player to resize correctly 
+	config.instanceOptions.matchWebGLToCanvasSize = false;
 
 	useEffect(() => {
 		console.log(width, height);

@@ -1,4 +1,4 @@
-import { UnityConfig } from "./UnityConfig";
+import { UnityInstanceOptions } from "@api/types";
 
 /**
  * Extended Window interface to include Unity specific properties.
@@ -6,7 +6,7 @@ import { UnityConfig } from "./UnityConfig";
 export interface UnityWindow extends Window {
 	createUnityInstance?: (
 		canvas: HTMLCanvasElement,
-		config: UnityConfig,
+		config: UnityInstanceOptions,
 		onProgress: (progress: number) => void
 	) => Promise<UnityInstance>;
 }
@@ -18,3 +18,4 @@ export interface UnityInstance {
 	SetFullscreen: (fullscreen: number) => void;
 	Quit: () => Promise<void>;
 }
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./EmbedSelection.css";
 
 import useAPI from "../hooks/useApi.ts";
@@ -25,6 +25,12 @@ const EmbedSelection: React.FC = () => {
 	// Function to submit embed data using hook
 	const { submitEmbedData } = useEmbedData();
 
+
+	useEffect(() => {
+		if (selected || configs.status !== "SUCCESS" || !configs.data.length) return;
+		setSelected(configs.data[0]);
+	}, [configs.status]);
+
 	return (
 		<div className="container">
 			<h1>Canvas Embed Selection</h1>
@@ -35,10 +41,19 @@ const EmbedSelection: React.FC = () => {
 				<select
 					value={selected?.id}
 					onChange={(e) => {
+						if (configs.status !== "SUCCESS") {
+							console.error("Bad status on configs: ", configs);
+							return;
+						}
 
-						if (configs.status !== "SUCCESS") return;
+						const newSelected = configs.data.find(config => config.id === e.target.value);
+						if (!newSelected) {
+							console.error(`Unable to find selected item "${e.target.value}"`)
+							alert("An error has occurred selecting that. Try refreshing the page.")
+							return;
+						}
 
-						setSelected(configs.data.find(config => config.id === e.target.value));
+						setSelected(newSelected);
 					}
 					}
 				>
