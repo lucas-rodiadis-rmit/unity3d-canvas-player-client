@@ -111,6 +111,7 @@
 /* Toggle Button */
 .control-bar-toggle-button {
 	width: 12vw;
+	min-width: 80px;
 	height: 35px;
 	background: #3498db;
 	border-bottom-left-radius: 50px;
@@ -142,13 +143,13 @@
 
 /* For centering icons in button elements */
 .icon-button {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
 }

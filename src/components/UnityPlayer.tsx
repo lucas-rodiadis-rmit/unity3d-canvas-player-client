@@ -3,15 +3,20 @@ import { useEffect, useRef } from "react";
 import "./UnityPlayer.css";
 
 import useCurrentSize from "../hooks/useCurrentSize";
-import UnityConfig from "../types/UnityConfig";
 import type { UnityInstance } from "../types/UnityInstance";
+import loadUnityInstance from "./utils/LoadUnityInstance";
+
+import { UnityAppConfig } from "@api/types";
 
 export const defaultBuildUrl: string = "/ClinicSim/Build";
 export const defaultLoaderUrl: string =
 	defaultBuildUrl + "/buildweb.loader.js";
 
+/**
+ * Props for the UnityPlayer component.
+ */
 interface UnityPlayerProps {
-	config: UnityConfig;
+	config: UnityAppConfig;
 	setUnityInstance: React.Dispatch<
 		React.SetStateAction<UnityInstance | null>
 	>;
@@ -20,72 +25,45 @@ interface UnityPlayerProps {
 
 function UnityPlayer({
 	config,
-	setUnityInstance, onProgress
+	setUnityInstance,
+	onProgress
 }: UnityPlayerProps) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(
 		null
 	);
-
 	const containerRef = useRef<HTMLDivElement | null>(
 		null
 	);
 
 	const { width, height } = useCurrentSize();
 
-	config.matchWebGLToCanvasSize = false;
+	// Force the player to resize correctly 
+	config.instanceOptions.matchWebGLToCanvasSize = false;
 
 	useEffect(() => {
 		console.log(width, height);
 	}, [width, height]);
 
-	/* When the page first loads, or the canvas reference changes, load the game */
+	// Load Unity instance when the component mounts
+	// and when the canvasRef changes.
 	useEffect(() => {
 		if (!canvasRef.current) return;
 
-		const runLoader = async () => {
-			const loaderUrl: string =
-				config.buildUrl + "/buildweb.loader.js";
-			console.log(
-				`Using Unity loader from ${loaderUrl}`
-			);
-
-			const script = document.createElement("script");
-			script.src = loaderUrl;
-			script.onload = async () => {
-				const createUnityInstance = (window as any)
-					.createUnityInstance;
-
-				if (!createUnityInstance) {
-					console.error(
-						"createUnityInstance function was not found in the loader js."
-					);
-					return;
-				}
-
-				try {
-					await createUnityInstance(
-						canvasRef.current!,
-						{ ...config },
-						onProgress
-					).then((unityInstance: UnityInstance) => {
-						setUnityInstance(unityInstance);
-					});
-				} catch (message) {
-					alert(message);
-				}
-			};
-
-			document.body.appendChild(script);
-		};
-
-		runLoader();
+		loadUnityInstance({
+			canvas: canvasRef.current,
+			config,
+			onProgress,
+			onLoaded: setUnityInstance
+		});
+		// Disable exhaustive-deps rule as it will cause unnecessary re-renders
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [canvasRef]);
 
 	console.log("Re-rendering Unity Component");
 
 	return (
 		<div ref={containerRef} id="canvas-unity-player">
-			<title>Unity WebGL Player | Nursing XR</title>
+			<title>Canvas Unity WebGL Player</title>
 			<canvas
 				ref={canvasRef}
 				id="unity-canvas"

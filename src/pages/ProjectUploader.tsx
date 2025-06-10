@@ -3,7 +3,7 @@ import "./ProjectUploader.css";
 
 import {
 	CreateUnityAppPayload,
-	UnityAppConfig
+	PartialUnityAppConfig
 } from "@api/types";
 import useUploader from "../hooks/useUploader";
 import { API_URL } from "../constants";
@@ -22,11 +22,12 @@ function ProjectUploader() {
 	const [unityAppPayload, setUnityAppPayload] =
 		useState<CreateUnityAppPayload>({
 			name: "",
-
-			allowFullscreen: false,
-			allowReloading: false,
-			allowResizing: false,
-			showFPS: false
+			playerOptions: {
+				allowFullscreen: false,
+				allowReloading: false,
+				allowResizing: false,
+				showFPS: false
+			}
 		});
 
 	const [files, setFiles] = useState<FileList | null>(
@@ -47,10 +48,10 @@ function ProjectUploader() {
 			alert("Please enter a project name.");
 			return;
 		} else if (
-			(unityAppPayload.embedWidth !== undefined &&
-				unityAppPayload.embedWidth < 0) ||
-			(unityAppPayload.embedHeight !== undefined &&
-				unityAppPayload.embedHeight < 0)
+			(unityAppPayload.playerOptions.embedWidth !== undefined &&
+				unityAppPayload.playerOptions.embedWidth < 0) ||
+			(unityAppPayload.playerOptions.embedHeight !== undefined &&
+				unityAppPayload.playerOptions.embedHeight < 0)
 		) {
 			alert(
 				"Width and Height must be positive numbers."
@@ -62,7 +63,7 @@ function ProjectUploader() {
 
 		try {
 			const data = await pingAPI<
-				UnityAppConfig
+				PartialUnityAppConfig
 			>({
 				endpoint: "unity-config",
 				method: "POST",
@@ -97,24 +98,31 @@ function ProjectUploader() {
 		const { name, checked, value, type, files } =
 			e.target as HTMLInputElement;
 
+		const setPlayerOption = (value: any) => {
+			setUnityAppPayload((prev) => ({
+				...prev,
+				playerOptions: {
+					...prev.playerOptions,
+					[name]: value
+				}
+			}));
+
+		}
+
+		// Check non-player options first
+		if (name === "name") {
+			setUnityAppPayload((prev) => ({ ...prev, name: value }));
+			return;
+		}
+
 		if (type === "file") {
 			setFiles(files);
-			return;
 		} else if (e.target.type === "checkbox") {
-			setUnityAppPayload((prev) => ({
-				...prev,
-				[name]: checked
-			}));
+			setPlayerOption(checked)
 		} else if (e.target.type === "number") {
-			setUnityAppPayload((prev) => ({
-				...prev,
-				[name]: Number(value)
-			}));
+			setPlayerOption(Number(value))
 		} else {
-			setUnityAppPayload((prev) => ({
-				...prev,
-				[name]: value
-			}));
+			setPlayerOption(value);
 		}
 	};
 
@@ -190,7 +198,7 @@ function ProjectUploader() {
 				<input
 					type="number"
 					placeholder="1280"
-					value={unityAppPayload.embedWidth}
+					value={unityAppPayload.playerOptions.embedWidth}
 					name="embedWidth"
 					onChange={handleChange}
 				/>{" "}
@@ -198,7 +206,7 @@ function ProjectUploader() {
 				<input
 					type="number"
 					placeholder="720"
-					value={unityAppPayload.embedHeight}
+					value={unityAppPayload.playerOptions.embedHeight}
 					name="embedHeight"
 					onChange={handleChange}
 				/>
@@ -211,7 +219,7 @@ function ProjectUploader() {
 						name="allowResizing"
 						onChange={handleChange}
 						checked={
-							unityAppPayload.allowResizing
+							unityAppPayload.playerOptions.allowResizing
 						}
 					/>
 					Allow Resizing
@@ -225,7 +233,7 @@ function ProjectUploader() {
 						name="allowFullscreen"
 						onChange={handleChange}
 						checked={
-							unityAppPayload.allowFullscreen
+							unityAppPayload.playerOptions.allowFullscreen
 						}
 					/>
 					Allow Fullscreen
@@ -238,7 +246,7 @@ function ProjectUploader() {
 						type="checkbox"
 						name="showFPS"
 						onChange={handleChange}
-						checked={unityAppPayload.showFPS}
+						checked={unityAppPayload.playerOptions.showFPS}
 					/>
 					Show FPS
 				</label>
@@ -251,7 +259,7 @@ function ProjectUploader() {
 						name="allowReloading"
 						onChange={handleChange}
 						checked={
-							unityAppPayload.allowReloading
+							unityAppPayload.playerOptions.allowReloading
 						}
 					/>
 					Allow Reloading

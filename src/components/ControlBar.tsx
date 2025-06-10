@@ -1,12 +1,18 @@
 import { useState } from "react";
 import "./ControlBar.css";
-import MenuModal from "./utils/MenuModal"; // NEW
+import MenuModal from "./utils/MenuModal";
 
 interface ControlBarProps {
 	makeFullScreen: () => void;
+	quitUnity: () => Promise<void>;
+	refreshUnity: (window: Window) => Promise<void>;
 }
 
-function ControlBar({ makeFullScreen }: ControlBarProps) {
+function ControlBar({
+	makeFullScreen,
+	quitUnity,
+	refreshUnity
+}: ControlBarProps) {
 	const [visible, setVisible] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false); // changed
 
@@ -57,8 +63,16 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 					<button
 						className="icon-button"
 						title="Restart"
-						onClick={() => {
-							/* your restart logic here */
+						onClick={async () => {
+							// Restart the Unity instance
+							await refreshUnity(window).catch(
+								(error) => {
+									console.error(
+										"Error refreshing Unity:",
+										error
+									);
+								}
+							);
 						}}
 						aria-label="Restart"
 					>
@@ -104,8 +118,16 @@ function ControlBar({ makeFullScreen }: ControlBarProps) {
 					<button
 						className="icon-button"
 						title="Close"
-						onClick={() => {
-							/* your close logic here */
+						onClick={async () => {
+							// Close the Unity instance
+							await quitUnity().catch(
+								(error) => {
+									console.error(
+										"Error quitting Unity:",
+										error
+									);
+								}
+							);
 						}}
 						aria-label="Close"
 					>

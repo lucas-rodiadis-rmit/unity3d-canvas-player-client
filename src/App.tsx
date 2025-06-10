@@ -1,47 +1,32 @@
-import { useMemo, useState } from "react";
-
-// import "./App.css";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import ControlBar from "./components/ControlBar";
-
-import UnityPlayer from "./components/UnityPlayer";
-
-import { useParams } from "react-router-dom";
-import useAPI from "./hooks/useApi";
-import UnityConfig, {
-	DefaultUnityPlayerConfig
-} from "./types/UnityConfig";
-
 import LoadingBar from "./components/LoadingBar";
+import UnityPlayer from "./components/UnityPlayer";
+import useUnityConfig from "./hooks/useUnityConfig";
 import { useUnityInstance } from "./hooks/useUnityInstance";
 
-interface UnityProjectConfig {
-	buildUrl: string;
-}
+import "./App.css";
 
 function App() {
-	let { project_id } = useParams();
+	const { project_id } = useParams();
 
-	const apiResponse = useAPI<UnityProjectConfig>({
-		endpoint: `unity-config/${project_id}`,
-		method: "GET"
-	});
-
-	const config = useMemo((): UnityConfig | null => {
-		if (apiResponse.status === "SUCCESS") {
-			return DefaultUnityPlayerConfig(
-				apiResponse.data.buildUrl
-			);
-		}
-
-		return null;
-	}, [apiResponse.status]);
+	// Fetch Unity project configuration
+	const { config, apiResponse } = useUnityConfig(
+		project_id ? project_id : ""
+	);
 
 	// Auth state for application
 	const [auth, _setAuth] = useState(true);
+	
 
 	// Unity instance methods and state
 	const {
+		showUnityPlayer,
+		fetchLoading,
+		quitUnity,
+		refreshUnity,
 		setUnityInstance,
 		makeFullScreen,
 		isLoading,
@@ -58,26 +43,45 @@ function App() {
 
 	return (
 		<>
-			<ControlBar makeFullScreen={makeFullScreen} />
+			<ControlBar
+				makeFullScreen={makeFullScreen}
+				quitUnity={quitUnity}
+				refreshUnity={refreshUnity}
+			/>
 			<div className="unity-player-main">
-				{config !== null ? (
-					<UnityPlayer
-						config={DefaultUnityPlayerConfig(
-							config.buildUrl
-						)}
-						setUnityInstance={setUnityInstance}
-						onProgress={handleProgress}
-					/>
-				) : (
-					<div>No player available.</div>
-				)}
-
-				{isLoading && (
-					<div className="loading-overlay">
-						<LoadingBar
-							progress={loadingProgress}
-						/>
+				{apiResponse.status === "ERROR" ? (
+					<div className="no-player-message">
+						No player available.
 					</div>
+				) : showUnityPlayer === false ? (
+					<div className="blur-overlay">
+						<div className="no-player-message-exited">
+							Unity player is hidden.
+						</div>
+					</div>
+				) : config === null || fetchLoading === true ? (
+					<div className="loading-overlay">
+						<div className="loading-circle" />
+					</div>
+				) : (
+					<>
+						<UnityPlayer
+							config={config}
+							setUnityInstance={
+								setUnityInstance
+							}
+							onProgress={handleProgress}
+						/>
+						{isLoading && (
+							<div className="loading-overlay">
+								<LoadingBar
+									progress={
+										loadingProgress
+									}
+								/>
+							</div>
+						)}
+					</>
 				)}
 			</div>
 		</>
