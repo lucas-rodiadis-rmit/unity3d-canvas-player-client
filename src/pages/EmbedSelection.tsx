@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./EmbedSelection.css";
 
+import { useNavigate } from "react-router-dom";
 import useAPI from "../hooks/useApi.ts";
 import useEmbedData from "../hooks/useEmbedData";
-import { useNavigate } from "react-router-dom";
 
 import { UnityAppConfig } from "@api/types";
 
 const EmbedSelection: React.FC = () => {
-	const [selected, setSelected] = useState<UnityAppConfig | undefined>(
-	);
+	const [selected, setSelected] = useState<
+		UnityAppConfig | undefined
+	>();
 
 	const navigate = useNavigate();
 
@@ -25,9 +26,13 @@ const EmbedSelection: React.FC = () => {
 	// Function to submit embed data using hook
 	const { submitEmbedData } = useEmbedData();
 
-
 	useEffect(() => {
-		if (selected || configs.status !== "SUCCESS" || !configs.data.length) return;
+		if (
+			selected ||
+			configs.status !== "SUCCESS" ||
+			!configs.data.length
+		)
+			return;
 		setSelected(configs.data[0]);
 	}, [configs.status]);
 
@@ -42,20 +47,31 @@ const EmbedSelection: React.FC = () => {
 					value={selected?.id}
 					onChange={(e) => {
 						if (configs.status !== "SUCCESS") {
-							console.error("Bad status on configs: ", configs);
+							console.error(
+								"Bad status on configs: ",
+								configs
+							);
 							return;
 						}
 
-						const newSelected = configs.data.find(config => config.id === e.target.value);
+						const newSelected =
+							configs.data.find(
+								(config) =>
+									config.id ===
+									e.target.value
+							);
 						if (!newSelected) {
-							console.error(`Unable to find selected item "${e.target.value}"`)
-							alert("An error has occurred selecting that. Try refreshing the page.")
+							console.error(
+								`Unable to find selected item "${e.target.value}"`
+							);
+							alert(
+								"An error has occurred selecting that. Try refreshing the page."
+							);
 							return;
 						}
 
 						setSelected(newSelected);
-					}
-					}
+					}}
 				>
 					{configs.status === "LOADING" ? (
 						<p>
@@ -76,22 +92,24 @@ const EmbedSelection: React.FC = () => {
 				<button
 					className="plus-button"
 					onClick={handleAddProject}
-				/>
+				>
+					+
+				</button>
 			</div>
 
-			<div className="checkbox-group">
-			</div>
+			<div className="checkbox-group"></div>
 
 			<button
 				className="button-submit"
-
 				onClick={() => {
 					if (!selected) {
-						alert("No config selected to submit.");
+						alert(
+							"No config selected to submit."
+						);
 						return;
 					}
 
-					submitEmbedData(selected, true)
+					submitEmbedData(selected, true);
 				}}
 			>
 				Add
