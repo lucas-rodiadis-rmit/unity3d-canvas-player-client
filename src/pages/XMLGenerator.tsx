@@ -57,60 +57,65 @@ function XMLGenerator() {
 
 	return (
 		<>
-			<h1>Canvas Unity Player</h1>
+			<div id="xml-generator-container">
+				<h1>Canvas Unity Player</h1>
 
-			<div className="input-group">
-				<label htmlFor="toolName">Tool Name:</label>
-				<input
-					type="text"
-					name="toolName"
-					value={xmlConfig.toolName}
-					onChange={handleChange}
-				/>
-			</div>
+				<div className="input-group">
+					<label htmlFor="toolName">
+						Tool Name:
+					</label>
+					<input
+						type="text"
+						name="toolName"
+						value={xmlConfig.toolName}
+						onChange={handleChange}
+					/>
+				</div>
 
-			<div className="input-group">
-				<label htmlFor="launchUrl">
-					Launch URL:
-				</label>
-				<input
-					type="text"
-					name="launchUrl"
-					value={xmlConfig.launchUrl}
-					onChange={handleChange}
-				/>
-			</div>
+				<div className="input-group">
+					<label htmlFor="launchUrl">
+						Launch URL:
+					</label>
+					<input
+						type="text"
+						name="launchUrl"
+						value={xmlConfig.launchUrl}
+						onChange={handleChange}
+					/>
+				</div>
 
-			<div className="input-group">
-				<label htmlFor="privacyLevel">
-					Privacy Level:
-				</label>
-				<select
-					name="privacyLevel"
-					onChange={handleChange}
-				>
-					<option value="public">public</option>
-					<option value="anonymous">
-						anonymous
-					</option>
-					<option value="name_only">
-						name_only
-					</option>
-				</select>
-			</div>
+				<div className="input-group">
+					<label htmlFor="privacyLevel">
+						Privacy Level:
+					</label>
+					<select
+						name="privacyLevel"
+						onChange={handleChange}
+					>
+						<option value="public">
+							public
+						</option>
+						<option value="anonymous">
+							anonymous
+						</option>
+						<option value="name_only">
+							name_only
+						</option>
+					</select>
+				</div>
 
-			<div className="input-group">
-				<label htmlFor="toolId">Tool Id:</label>
-				<input
-					type="text"
-					name="toolId"
-					value={xmlConfig.toolId}
-					onChange={handleChange}
-				/>
-			</div>
+				<div className="input-group">
+					<label htmlFor="toolId">Tool Id:</label>
+					<input
+						type="text"
+						name="toolId"
+						value={xmlConfig.toolId}
+						onChange={handleChange}
+					/>
+				</div>
 
-			<div className="xml-box" id="xmlBox">
-				{`<?xml version="1.0" encoding="UTF-8"?>
+				<div className="xml-box" id="xmlBox">
+					{`<?xml version="1.0" encoding="UTF-8"?>
 			<cartridge_basiclti_link
 				xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0"
 				xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0"
@@ -151,29 +156,30 @@ function XMLGenerator() {
 					</lticm:options>
 				</blti:extensions>
 			</cartridge_basiclti_link>`}
-			</div>
-			<button
-				className="copy-button"
-				onClick={copyXML}
-			>
-				Copy XML
-			</button>
+				</div>
+				<button
+					className="copy-button"
+					onClick={copyXML}
+				>
+					Copy XML
+				</button>
 
-			<div className="instructions">
-				{/* TODO: Add more thorough and clear instructions, preferably with videos, gifs, pictures and other media to assist */}
-				<h3>How To Use:</h3>
-				<ol>
-					<li>
-						Fill the form (leave as default
-						unless required)
-					</li>
-					<li>Click Generate XML</li>
-					<li>Click Copy XML</li>
-					<li>
-						Paste XML into Canvas Shell as a LTI
-						1.1 External Tool/App
-					</li>
-				</ol>
+				<div className="instructions">
+					{/* TODO: Add more thorough and clear instructions, preferably with videos, gifs, pictures and other media to assist */}
+					<h3>How To Use:</h3>
+					<ol>
+						<li>
+							Fill the form (leave as default
+							unless required)
+						</li>
+						<li>Click Generate XML</li>
+						<li>Click Copy XML</li>
+						<li>
+							Paste XML into Canvas Shell as a
+							LTI 1.1 External Tool/App
+						</li>
+					</ol>
+				</div>
 			</div>
 		</>
 	);

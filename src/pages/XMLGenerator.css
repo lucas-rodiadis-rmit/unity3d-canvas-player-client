@@ -1,5 +1,10 @@
 h1 {
 	text-align: center;
+}	
+
+#xml-generator-container {
+	padding:2rem 3rem;
+	text-align: left;
 }
 
 .input-group {
