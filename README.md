@@ -10,7 +10,8 @@ These are the instructions to run the development environment.
 
 Follow the following:
 - Make a .env file with the following (this may need to be modified when used for production)
-```VITE_API_URL=http://localhost:8080/api/v1
+```
+VITE_API_URL=http://localhost:8080/api/v1
 VITE_CLIENT_URL_BASE=/
 ```
 
